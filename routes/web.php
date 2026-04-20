@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Superadmin & Admin
-    Route::middleware(['role:superadmin,admin'])->group(function () {
+    Route::middleware(['role:superadmin,admin'])->name('admin.')->group(function () {
         Route::resource('guru', GuruController::class);
         Route::resource('siswa', SiswaController::class);
         Route::resource('kelas', KelasController::class);

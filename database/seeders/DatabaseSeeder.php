@@ -21,28 +21,28 @@ class DatabaseSeeder extends Seeder
         // 1. Seed Users
         $superadmin = User::create([
             'name' => 'Superadmin',
-            'email' => 'superadmin@siakad.com',
+            'email' => 'superadmin@smkn1curugbitung.sch.id',
             'password' => Hash::make('password'),
             'role' => 'superadmin',
         ]);
 
         $admin = User::create([
             'name' => 'Admin Sekolah',
-            'email' => 'admin@siakad.com',
+            'email' => 'admin@smkn1curugbitung.sch.id',
             'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
 
         $guruUser = User::create([
             'name' => 'Budi Santoso, S.Kom',
-            'email' => 'guru@siakad.com',
+            'email' => 'guru@smkn1curugbitung.sch.id',
             'password' => Hash::make('password'),
             'role' => 'guru',
         ]);
 
         $siswaUser = User::create([
             'name' => 'Ahmad Reza',
-            'email' => 'siswa@siakad.com',
+            'email' => 'siswa@smkn1curugbitung.sch.id',
             'password' => Hash::make('password'),
             'role' => 'siswa',
         ]);
@@ -119,7 +119,7 @@ class DatabaseSeeder extends Seeder
             'jam_mulai' => '10:00:00',
             'jam_selesai' => '12:00:00',
         ]);
-        
+
         $this->command->info('Default SIAKAD data seeded successfully!');
     }
 }
