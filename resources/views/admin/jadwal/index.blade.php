@@ -14,7 +14,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Data Jadwal Pelajaran</h5>
-            <a href="{{ route('admin.jadwal.create') }}" class="btn btn-primary">Tambah Jadwal</a>
+            <a href="{{ route('admin.jadwal.create') }}" class="btn btn-primary"><i class='bx bx-plus me-1'></i>Tambah Jadwal</a>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table">
@@ -39,18 +39,13 @@
                         <td><span class="badge bg-label-primary">{{ $jadwal->mata_pelajaran->nama_mapel ?? '-' }}</span></td>
                         <td>{{ $jadwal->guru->nama_guru ?? '-' }}</td>
                         <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('admin.jadwal.edit', $jadwal->id) }}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                    <form action="{{ route('admin.jadwal.destroy', $jadwal->id) }}" method="POST" onsubmit="return confirm('Yakin hapus jadwal ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="dropdown-item text-danger"><i class="bx bx-trash me-1"></i> Hapus</button>
-                                    </form>
-                                </div>
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('admin.jadwal.edit', $jadwal->id) }}" class="btn btn-sm btn-warning"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                <form action="{{ route('admin.jadwal.destroy', $jadwal->id) }}" method="POST" onsubmit="return confirm('Yakin hapus jadwal ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger"><i class="bx bx-trash me-1"></i> Hapus</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
