@@ -3,63 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
+use App\Models\Guru;
 use Illuminate\Http\Request;
 
 class KelasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $kelases = Kelas::with('wali_kelas')->latest()->get();
+        return view('admin.kelas.index', compact('kelases'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $gurus = Guru::all();
+        return view('admin.kelas.create', compact('gurus'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_kelas' => 'required|string|max:100|unique:kelas',
+            'wali_kelas_id' => 'nullable|exists:gurus,id',
+        ]);
+
+        Kelas::create($request->only('nama_kelas', 'wali_kelas_id'));
+
+        return redirect()->route('admin.kelas.index')->with('success', 'Data Kelas berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kelas $kelas)
+    public function edit(Kelas $kela)
     {
-        //
+        // the scaffold generates variable $kela because of singular table name trickiness, but let's stick to $kela or change it
+        $kelas = $kela;
+        $gurus = Guru::all();
+        return view('admin.kelas.edit', compact('kelas', 'gurus'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Kelas $kelas)
+    public function update(Request $request, Kelas $kela)
     {
-        //
+        $request->validate([
+            'nama_kelas' => 'required|string|max:100|unique:kelas,nama_kelas,' . $kela->id,
+            'wali_kelas_id' => 'nullable|exists:gurus,id',
+        ]);
+
+        $kela->update($request->only('nama_kelas', 'wali_kelas_id'));
+
+        return redirect()->route('admin.kelas.index')->with('success', 'Data Kelas berhasil diubah.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Kelas $kelas)
+    public function destroy(Kelas $kela)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Kelas $kelas)
-    {
-        //
+        $kela->delete();
+        return redirect()->route('admin.kelas.index')->with('success', 'Data Kelas berhasil dihapus.');
     }
 }
