@@ -44,7 +44,7 @@
                         <div class="mb-3">
                             <label class="form-label" for="jabatan">Jabatan Kelas</label>
                             <select class="form-select @error('jabatan') is-invalid @enderror" id="jabatan" name="jabatan">
-                                <option value="">Siswa Biasa</option>
+                                <option value="">Siswa</option>
                                 <option value="ketua_kelas" {{ old('jabatan') == 'ketua_kelas' ? 'selected' : '' }}>Ketua Kelas</option>
                                 <option value="sekretaris" {{ old('jabatan') == 'sekretaris' ? 'selected' : '' }}>Sekretaris</option>
                                 <option value="bendahara" {{ old('jabatan') == 'bendahara' ? 'selected' : '' }}>Bendahara</option>

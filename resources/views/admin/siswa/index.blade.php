@@ -37,7 +37,7 @@
                                 <td>{{ $siswa->nis }}</td>
                                 <td><strong>{{ $siswa->nama_siswa }}</strong></td>
                                 <td>{{ $siswa->kelas->nama_kelas ?? '-' }}</td>
-                                <td>{{ $siswa->jabatan ? ucfirst($siswa->jabatan) : 'Siswa Biasa' }}</td>
+                                <td>{{ $siswa->jabatan ? ucfirst($siswa->jabatan) : 'Siswa' }}</td>
                                 <td>
                                     @if ($siswa->user)
                                         <span class="badge bg-label-success">Aktif ({{ $siswa->user->email }})</span>
