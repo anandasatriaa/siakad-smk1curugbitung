@@ -16,7 +16,8 @@ class KelasController extends Controller
 
     public function create()
     {
-        $gurus = Guru::all();
+        $assignedGuruIds = Kelas::whereNotNull('wali_kelas_id')->pluck('wali_kelas_id')->toArray();
+        $gurus = Guru::whereNotIn('id', $assignedGuruIds)->get();
         return view('admin.kelas.create', compact('gurus'));
     }
 
@@ -24,7 +25,9 @@ class KelasController extends Controller
     {
         $request->validate([
             'nama_kelas' => 'required|string|max:100|unique:kelas',
-            'wali_kelas_id' => 'nullable|exists:gurus,id',
+            'wali_kelas_id' => 'nullable|exists:gurus,id|unique:kelas,wali_kelas_id',
+        ], [
+            'wali_kelas_id.unique' => 'Guru tersebut sudah menjadi wali di kelas lain.'
         ]);
 
         Kelas::create($request->only('nama_kelas', 'wali_kelas_id'));
@@ -34,9 +37,11 @@ class KelasController extends Controller
 
     public function edit(Kelas $kela)
     {
-        // the scaffold generates variable $kela because of singular table name trickiness, but let's stick to $kela or change it
         $kelas = $kela;
-        $gurus = Guru::all();
+        $assignedGuruIds = Kelas::whereNotNull('wali_kelas_id')
+                                ->where('id', '!=', $kela->id)
+                                ->pluck('wali_kelas_id')->toArray();
+        $gurus = Guru::whereNotIn('id', $assignedGuruIds)->get();
         return view('admin.kelas.edit', compact('kelas', 'gurus'));
     }
 
@@ -44,7 +49,9 @@ class KelasController extends Controller
     {
         $request->validate([
             'nama_kelas' => 'required|string|max:100|unique:kelas,nama_kelas,' . $kela->id,
-            'wali_kelas_id' => 'nullable|exists:gurus,id',
+            'wali_kelas_id' => 'nullable|exists:gurus,id|unique:kelas,wali_kelas_id,' . $kela->id,
+        ], [
+            'wali_kelas_id.unique' => 'Guru tersebut sudah menjadi wali di kelas lain.'
         ]);
 
         $kela->update($request->only('nama_kelas', 'wali_kelas_id'));
