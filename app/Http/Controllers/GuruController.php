@@ -71,6 +71,7 @@ class GuruController extends Controller
         if ($guru->user) {
             $guru->user->update([
                 'name' => $request->nama_guru,
+                'email' => $request->nip . '@smkn1curugbitung.sch.id',
             ]);
         }
 

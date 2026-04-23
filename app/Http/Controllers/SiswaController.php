@@ -73,6 +73,7 @@ class SiswaController extends Controller
         if ($siswa->user) {
             $siswa->user->update([
                 'name' => $request->nama_siswa,
+                'email' => strtolower(str_replace(' ', '', $request->nis)) . '@smkn1curugbitung.sch.id',
             ]);
         }
 
