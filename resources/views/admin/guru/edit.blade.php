@@ -13,7 +13,7 @@
                     <h5 class="mb-0">Form Edit Guru</h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.guru.update', $guru->id) }}" method="POST">
+                    <form action="{{ route('admin.guru.update', $guru->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -37,6 +37,21 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="foto">Foto Profil (Kosongkan jika tidak ingin mengubah)</label>
+                            @if($guru->foto)
+                                <div class="mb-2">
+                                    <img src="{{ asset('storage/' . $guru->foto) }}" alt="Foto Guru" class="rounded" width="100">
+                                </div>
+                            @endif
+                            <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" accept="image/*" onchange="previewImage(this)" />
+                            @error('foto')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="mt-2">
+                                <img id="foto_preview" src="#" alt="Preview Foto" class="rounded" width="100" style="display: none; object-fit: cover;">
+                            </div>
+                        </div>
 
                         <button type="submit" class="btn btn-primary">Update Data</button>
                         <a href="{{ route('admin.guru.index') }}" class="btn btn-outline-secondary">Batal</a>
@@ -47,3 +62,22 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function previewImage(input) {
+        var preview = document.getElementById('foto_preview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.src = '#';
+            preview.style.display = 'none';
+        }
+    }
+</script>
+@endpush

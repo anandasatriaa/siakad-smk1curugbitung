@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nip')->nullable()->unique();
             $table->string('nama_guru');
             $table->string('no_telp')->nullable();
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }

@@ -9,6 +9,22 @@
               </div>
 
               <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                  @php
+                      $fotoProfil = asset('assets/img/avatars/1.png');
+                      if(Auth::check()) {
+                          if(Auth::user()->role === 'guru') {
+                              $guru = \App\Models\Guru::where('user_id', Auth::id())->first();
+                              if($guru && $guru->foto) {
+                                  $fotoProfil = asset('storage/' . $guru->foto);
+                              }
+                          } elseif(Auth::user()->role === 'siswa') {
+                              $siswa = \App\Models\Siswa::where('user_id', Auth::id())->first();
+                              if($siswa && $siswa->foto) {
+                                  $fotoProfil = asset('storage/' . $siswa->foto);
+                              }
+                          }
+                      }
+                  @endphp
 
                   <ul class="navbar-nav flex-row align-items-center ms-auto">
 
@@ -17,8 +33,8 @@
                           <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                               data-bs-toggle="dropdown">
                               <div class="avatar avatar-online">
-                                  <img src="{{ asset('assets/') }}/img/avatars/1.png" alt
-                                      class="w-px-40 h-auto rounded-circle" />
+                                  <img src="{{ $fotoProfil }}" alt
+                                      class="w-px-40 h-px-40 rounded-circle" style="object-fit: cover; width: 40px; height: 40px;" />
                               </div>
                           </a>
                           <ul class="dropdown-menu dropdown-menu-end">
@@ -27,8 +43,8 @@
                                       <div class="d-flex">
                                           <div class="flex-shrink-0 me-3">
                                               <div class="avatar avatar-online">
-                                                  <img src="{{ asset('assets/') }}/img/avatars/1.png" alt
-                                                      class="w-px-40 h-auto rounded-circle" />
+                                                  <img src="{{ $fotoProfil }}" alt
+                                                      class="w-px-40 h-px-40 rounded-circle" style="object-fit: cover; width: 40px; height: 40px;" />
                                               </div>
                                           </div>
                                           <div class="flex-grow-1">

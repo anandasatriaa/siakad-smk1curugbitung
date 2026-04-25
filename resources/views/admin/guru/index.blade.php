@@ -22,6 +22,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Foto</th>
                             <th>NIP</th>
                             <th>Nama Guru</th>
                             <th>No Telp</th>
@@ -33,6 +34,13 @@
                         @forelse($gurus as $guru)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    @if($guru->foto)
+                                        <img src="{{ asset('storage/' . $guru->foto) }}" alt="Foto" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                    @else
+                                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Default" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                    @endif
+                                </td>
                                 <td>{{ $guru->nip }}</td>
                                 <td><strong>{{ $guru->nama_guru }}</strong></td>
                                 <td>{{ $guru->no_telp ?? '-' }}</td>

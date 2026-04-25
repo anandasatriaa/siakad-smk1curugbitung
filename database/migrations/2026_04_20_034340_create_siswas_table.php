@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_siswa');
             $table->foreignId('kelas_id')->constrained('kelas')->onDelete('cascade');
             $table->string('jabatan')->nullable(); // misal 'sekretaris'
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }

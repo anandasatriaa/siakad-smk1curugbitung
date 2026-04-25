@@ -27,14 +27,12 @@ class GuruController extends Controller
             'nip' => 'required|string|max:50|unique:gurus',
             'nama_guru' => 'required|string|max:255',
             'no_telp' => 'nullable|string|max:20',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         // Auto create user
-        // We use NIP as email prefix or a normalized name to avoid duplicate collisions if email isn't provided.
-        // Or simply require email if we want. Let's create an email using NIP.
         $email = $request->nip . '@smkn1curugbitung.sch.id';
 
-        // Ensure email doesn't exist just in case
         $user = User::firstOrCreate([
             'email' => $email
         ], [
@@ -43,12 +41,18 @@ class GuruController extends Controller
             'role' => 'guru',
         ]);
 
-        Guru::create([
+        $data = [
             'user_id' => $user->id,
             'nip' => $request->nip,
             'nama_guru' => $request->nama_guru,
             'no_telp' => $request->no_telp,
-        ]);
+        ];
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('gurus', 'public');
+        }
+
+        Guru::create($data);
 
         return redirect()->route('admin.guru.index')->with('success', 'Data Guru dan Akun Login berhasil ditambahkan.');
     }
@@ -64,9 +68,19 @@ class GuruController extends Controller
             'nip' => 'required|string|max:50|unique:gurus,nip,' . $guru->id,
             'nama_guru' => 'required|string|max:255',
             'no_telp' => 'nullable|string|max:20',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $guru->update($request->only('nip', 'nama_guru', 'no_telp'));
+        $data = $request->only('nip', 'nama_guru', 'no_telp');
+
+        if ($request->hasFile('foto')) {
+            if ($guru->foto) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($guru->foto);
+            }
+            $data['foto'] = $request->file('foto')->store('gurus', 'public');
+        }
+
+        $guru->update($data);
 
         if ($guru->user) {
             $guru->user->update([

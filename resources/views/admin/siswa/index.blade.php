@@ -22,6 +22,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Foto</th>
                             <th>NIS</th>
                             <th>Nama Siswa</th>
                             <th>Kelas</th>
@@ -34,6 +35,13 @@
                         @forelse($siswas as $siswa)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    @if($siswa->foto)
+                                        <img src="{{ asset('storage/' . $siswa->foto) }}" alt="Foto" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                    @else
+                                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Default" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                    @endif
+                                </td>
                                 <td>{{ $siswa->nis }}</td>
                                 <td><strong>{{ $siswa->nama_siswa }}</strong></td>
                                 <td>{{ $siswa->kelas->nama_kelas ?? '-' }}</td>

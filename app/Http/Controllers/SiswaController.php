@@ -30,6 +30,7 @@ class SiswaController extends Controller
             'nama_siswa' => 'required|string|max:255',
             'kelas_id' => 'required|exists:kelas,id',
             'jabatan' => 'nullable|string|max:100',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $email = strtolower(str_replace(' ', '', $request->nis)) . '@smkn1curugbitung.sch.id';
@@ -42,13 +43,19 @@ class SiswaController extends Controller
             'role' => 'siswa',
         ]);
 
-        Siswa::create([
+        $data = [
             'user_id' => $user->id,
             'nis' => $request->nis,
             'nama_siswa' => $request->nama_siswa,
             'kelas_id' => $request->kelas_id,
             'jabatan' => $request->jabatan,
-        ]);
+        ];
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('siswas', 'public');
+        }
+
+        Siswa::create($data);
 
         return redirect()->route('admin.siswa.index')->with('success', 'Data Siswa dan Akun Login berhasil ditambahkan.');
     }
@@ -66,9 +73,19 @@ class SiswaController extends Controller
             'nama_siswa' => 'required|string|max:255',
             'kelas_id' => 'required|exists:kelas,id',
             'jabatan' => 'nullable|string|max:100',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $siswa->update($request->only('nis', 'nama_siswa', 'kelas_id', 'jabatan'));
+        $data = $request->only('nis', 'nama_siswa', 'kelas_id', 'jabatan');
+
+        if ($request->hasFile('foto')) {
+            if ($siswa->foto) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($siswa->foto);
+            }
+            $data['foto'] = $request->file('foto')->store('siswas', 'public');
+        }
+
+        $siswa->update($data);
 
         if ($siswa->user) {
             $siswa->user->update([
