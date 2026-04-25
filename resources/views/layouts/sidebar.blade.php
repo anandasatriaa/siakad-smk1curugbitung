@@ -104,8 +104,8 @@
                         <li class="menu-header small text-uppercase">
                             <span class="menu-header-text">Akademik & Laporan</span>
                         </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {{ Route::is('nilai.*') ? 'active' : '' }}">
+                            <a href="{{ route('nilai.index') }}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-spreadsheet"></i>
                                 <div data-i18n="Input Nilai">Input Nilai</div>
                             </a>
@@ -143,8 +143,8 @@
                                 <div data-i18n="Jadwal Mengajar">Jadwal Mengajar</div>
                             </a>
                         </li>
-                        <li class="menu-item {{ Route::is('guru.nilai.*') ? 'active' : '' }}">
-                            <a href="{{ route('guru.nilai.index') }}" class="menu-link">
+                        <li class="menu-item {{ Route::is('nilai.*') ? 'active' : '' }}">
+                            <a href="{{ route('nilai.index') }}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-spreadsheet"></i>
                                 <div data-i18n="Input Nilai">Input Nilai Siswa</div>
                             </a>

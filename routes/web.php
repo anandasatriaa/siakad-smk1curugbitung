@@ -40,9 +40,13 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('jadwal', JadwalPelajaranController::class);
     });
 
+    // Nilai (Guru, Admin, Superadmin)
+    Route::middleware(['role:guru,superadmin,admin'])->group(function () {
+        Route::resource('nilai', NilaiController::class);
+    });
+
     // Guru
     Route::middleware(['role:guru,superadmin'])->prefix('guru')->name('guru.')->group(function () {
-        Route::resource('nilai', NilaiController::class);
         Route::get('jadwal-mengajar', [JadwalPelajaranController::class, 'jadwalMengajar'])->name('jadwal.mengajar');
     });
 });
