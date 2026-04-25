@@ -53,8 +53,8 @@
                             <strong>Info:</strong> Menyimpan data guru juga akan otomatis membuat akun login dengan email format <code>[NIP]@smkn1curugbitung.sch.id</code> dan password default <code>password</code>.
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Simpan Data</button>
-                        <a href="{{ route('admin.guru.index') }}" class="btn btn-outline-secondary">Batal</a>
+                        <button type="submit" class="btn btn-primary"> <i class="bx bx-save me-1"></i> Simpan Data</button>
+                        <a href="{{ route('admin.guru.index') }}" class="btn btn-outline-secondary"><i class="bx bx-x-circle me-1"></i> Batal</a>
                     </form>
                 </div>
             </div>

@@ -50,7 +50,7 @@
                                 <td>{{ $siswa->jabatan ? ucfirst($siswa->jabatan) : 'Siswa' }}</td>
                                 <td>
                                     @if ($siswa->user)
-                                        <span class="badge bg-label-success">Aktif ({{ $siswa->user->email }})</span>
+                                        <span class="badge bg-label-success">{{ $siswa->user->email }}</span>
                                     @else
                                         <span class="badge bg-label-warning">Belum Ada</span>
                                     @endif

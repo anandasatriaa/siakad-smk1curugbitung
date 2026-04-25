@@ -32,8 +32,8 @@
                             @enderror
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Simpan Data</button>
-                        <a href="{{ route('admin.mapel.index') }}" class="btn btn-outline-secondary">Batal</a>
+                        <button type="submit" class="btn btn-primary"><i class="bx bx-save me-1"></i> Simpan Data</button>
+                        <a href="{{ route('admin.mapel.index') }}" class="btn btn-outline-secondary"><i class="bx bx-x-circle me-1"></i> Batal</a>
                     </form>
                 </div>
             </div>

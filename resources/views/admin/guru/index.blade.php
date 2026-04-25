@@ -48,7 +48,7 @@
                                 <td>{{ $guru->no_telp ?? '-' }}</td>
                                 <td>
                                     @if ($guru->user)
-                                        <span class="badge bg-label-success">Aktif ({{ $guru->user->email }})</span>
+                                        <span class="badge bg-label-success">{{ $guru->user->email }}</span>
                                     @else
                                         <span class="badge bg-label-warning">Belum Ada</span>
                                     @endif
