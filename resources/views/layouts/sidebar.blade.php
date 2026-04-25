@@ -149,20 +149,20 @@
                                 <div data-i18n="Input Nilai">Input Nilai Siswa</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {{ Route::is('guru.siswa.kelas') ? 'active' : '' }}">
+                            <a href="{{ route('guru.siswa.kelas') }}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-group"></i>
                                 <div data-i18n="Data Siswa">Data Siswa per Kelas</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {{ Route::is('guru.absensi.riwayat') ? 'active' : '' }}">
+                            <a href="{{ route('guru.absensi.riwayat') }}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-history"></i>
                                 <div data-i18n="Riwayat Absensi">Riwayat Absensi Siswa</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {{ Route::is('guru.laporan.*') ? 'active' : '' }}">
+                            <a href="{{ route('guru.laporan.export') }}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-export"></i>
                                 <div data-i18n="Export Laporan">Export Laporan</div>
                             </a>
