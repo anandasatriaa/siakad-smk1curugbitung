@@ -10,7 +10,7 @@
 
               <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                   @php
-                      $fotoProfil = asset('assets/img/avatars/1.png');
+                      $fotoProfil = asset('assets/img/avatars/user-default.png');
                       if(Auth::check()) {
                           if(Auth::user()->role === 'guru') {
                               $guru = \App\Models\Guru::where('user_id', Auth::id())->first();

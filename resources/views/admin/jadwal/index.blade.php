@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Data Jadwal Pelajaran')
+
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Master Data /</span> Jadwal Pelajaran</h4>

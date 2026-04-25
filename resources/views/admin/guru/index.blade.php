@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Data Guru')
+
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Master Data /</span> Guru</h4>
@@ -38,7 +40,7 @@
                                     @if($guru->foto)
                                         <img src="{{ asset('storage/' . $guru->foto) }}" alt="Foto" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
                                     @else
-                                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Default" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                        <img src="{{ asset('assets/img/avatars/user-default.png') }}" alt="Default" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
                                     @endif
                                 </td>
                                 <td>{{ $guru->nip }}</td>

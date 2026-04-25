@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard Guru')
+
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="row">

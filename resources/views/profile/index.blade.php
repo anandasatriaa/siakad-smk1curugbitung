@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Profile')
+
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
@@ -24,7 +26,7 @@
                         <div class="row">
                             <div class="col-md-4 text-center mb-4">
                                 @php
-                                    $fotoProfil = asset('assets/img/avatars/1.png');
+                                    $fotoProfil = asset('assets/img/avatars/user-default.png');
                                     if(auth()->user()->role === 'guru' && $guru && $guru->foto) {
                                         $fotoProfil = asset('storage/' . $guru->foto);
                                     } elseif(auth()->user()->role === 'siswa' && $siswa && $siswa->foto) {
