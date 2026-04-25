@@ -169,14 +169,24 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->role === 'superadmin' || auth()->user()->role === 'siswa')
+                    @php
+                        $isSekretaris = false;
+                        if(auth()->user()->role === 'siswa') {
+                            $siswa = \App\Models\Siswa::where('user_id', auth()->user()->id)->first();
+                            if($siswa && strtolower($siswa->jabatan) === 'sekretaris'){
+                                $isSekretaris = true;
+                            }
+                        }
+                    @endphp
+
+                    @if (auth()->user()->role === 'superadmin' || $isSekretaris)
                         <li class="menu-header small text-uppercase">
-                            <span class="menu-header-text">Siswa</span>
+                            <span class="menu-header-text">Siswa / Sekretaris</span>
                         </li>
                         <li class="menu-item {{ Route::is('siswa.absensi.*') ? 'active' : '' }}">
                             <a href="{{ route('siswa.absensi.index') }}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-check-square"></i>
-                                <div data-i18n="Absensi">Input Absensi (Sekretaris)</div>
+                                <div data-i18n="Absensi">Input Absensi Kelas</div>
                             </a>
                         </li>
                     @endif

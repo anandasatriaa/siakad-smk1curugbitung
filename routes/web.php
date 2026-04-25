@@ -26,6 +26,11 @@ Auth::routes([
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Siswa
+    Route::middleware(['role:siswa,superadmin'])->prefix('siswa')->name('siswa.')->group(function () {
+        Route::resource('absensi', AbsensiController::class);
+    });
+    
     // Superadmin & Admin
     Route::middleware(['role:superadmin,admin'])->name('admin.')->group(function () {
         Route::resource('guru', GuruController::class);
@@ -39,10 +44,5 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:guru,superadmin'])->prefix('guru')->name('guru.')->group(function () {
         Route::resource('nilai', NilaiController::class);
         Route::get('jadwal-mengajar', [JadwalPelajaranController::class, 'jadwalMengajar'])->name('jadwal.mengajar');
-    });
-
-    // Siswa
-    Route::middleware(['role:siswa,superadmin'])->prefix('siswa')->name('siswa.')->group(function () {
-        Route::resource('absensi', AbsensiController::class);
     });
 });
