@@ -10,6 +10,7 @@ use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\JadwalPelajaranController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\LaporanController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -38,6 +39,10 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('kelas', KelasController::class);
         Route::resource('mapel', MataPelajaranController::class);
         Route::resource('jadwal', JadwalPelajaranController::class);
+
+        // Laporan
+        Route::get('laporan/nilai', [LaporanController::class, 'nilai'])->name('laporan.nilai');
+        Route::get('laporan/absensi', [LaporanController::class, 'absensi'])->name('laporan.absensi');
     });
 
     // Nilai (Guru, Admin, Superadmin)

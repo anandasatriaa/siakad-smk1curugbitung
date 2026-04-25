@@ -110,14 +110,14 @@
                                 <div data-i18n="Input Nilai">Input Nilai</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {{ Route::is('admin.laporan.nilai') ? 'active' : '' }}">
+                            <a href="{{ route('admin.laporan.nilai') }}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>
                                 <div data-i18n="Laporan Nilai">Laporan Nilai</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {{ Route::is('admin.laporan.absensi') ? 'active' : '' }}">
+                            <a href="{{ route('admin.laporan.absensi') }}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-detail"></i>
                                 <div data-i18n="Absensi">Melihat Absensi</div>
                             </a>
