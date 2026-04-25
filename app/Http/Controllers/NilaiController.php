@@ -83,7 +83,7 @@ class NilaiController extends Controller
     {
         $request->validate([
             'kelas_id' => 'required|exists:kelas,id',
-            'mapel_id' => 'required|exists:mata_pelajarans,id',
+            'mapel_id' => 'required|exists:mata_pelajaran,id',
             'semester' => 'required|in:Ganjil,Genap',
             'tahun_ajaran' => 'required|string',
             'nilai' => 'required|array',

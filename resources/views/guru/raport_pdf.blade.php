@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Raport Siswa - {{ $siswa->nama_siswa }}</title>
+    <title>Laporan Siswa - {{ $siswa->nama_siswa }}</title>
     <style>
         body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.5; }
         .header { text-align: center; margin-bottom: 20px; }

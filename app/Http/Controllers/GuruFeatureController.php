@@ -134,8 +134,8 @@ class GuruFeatureController extends Controller
             'alpa' => Absensi::where('siswa_id', $siswa_id)->where('status', 'alpa')->count(),
         ];
 
-        $pdf = Pdf::loadView('guru.raport_pdf', compact('siswa', 'nilais', 'semester', 'tahun_ajaran', 'absensiSummary'));
+        $pdf = Pdf::loadView('guru.laporan_pdf', compact('siswa', 'nilais', 'semester', 'tahun_ajaran', 'absensiSummary'));
         
-        return $pdf->download('Raport_' . str_replace(' ', '_', $siswa->nama_siswa) . '_' . $semester . '.pdf');
+        return $pdf->download('Laporan_' . str_replace(' ', '_', $siswa->nama_siswa) . '_' . $semester . '.pdf');
     }
 }

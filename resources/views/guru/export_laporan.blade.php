@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Export Laporan (Raport)')
+@section('title', 'Export Laporan')
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Guru /</span> Export Laporan (Raport)
+        <span class="text-muted fw-light">Guru /</span> Export Laporan
     </h4>
 
     <div class="card mb-4">
@@ -15,7 +15,7 @@
         <div class="card-body">
             @if(count($kelasList) == 0 && auth()->user()->role !== 'superadmin')
                 <div class="alert alert-info">
-                    Menu export raport diperuntukkan bagi <strong>Wali Kelas</strong>. Anda saat ini tidak terdaftar sebagai wali kelas untuk kelas manapun.
+                    Menu export laporan diperuntukkan bagi <strong>Wali Kelas</strong>. Anda saat ini tidak terdaftar sebagai wali kelas untuk kelas manapun.
                 </div>
             @else
                 <form action="{{ route('guru.laporan.export') }}" method="GET">
@@ -63,7 +63,7 @@
     @if($kelas_id)
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Daftar Siswa untuk Dicetak Raportnya</h5>
+                <h5 class="mb-0">Daftar Siswa untuk Dicetak Laporannya</h5>
             </div>
             <div class="card-body">
                 @if(count($siswas) > 0)
@@ -85,7 +85,7 @@
                                         <td>{{ $s->nama_siswa }}</td>
                                         <td>
                                             <a href="{{ route('guru.laporan.download', ['siswa_id' => $s->id, 'semester' => $semester, 'tahun_ajaran' => $tahun_ajaran]) }}" target="_blank" class="btn btn-sm btn-danger">
-                                                <i class="bx bxs-file-pdf me-1"></i> Cetak Raport PDF
+                                                <i class="bx bxs-file-pdf me-1"></i> Cetak Laporan PDF
                                             </a>
                                         </td>
                                     </tr>
