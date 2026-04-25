@@ -12,6 +12,7 @@ use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\GuruFeatureController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -27,6 +28,10 @@ Auth::routes([
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Siswa
     Route::middleware(['role:siswa,superadmin'])->prefix('siswa')->name('siswa.')->group(function () {
