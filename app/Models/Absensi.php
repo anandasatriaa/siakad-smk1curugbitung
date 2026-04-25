@@ -12,6 +12,8 @@ class Absensi extends Model
 {
     use HasFactory;
 
+    protected $table = 'absensi';
+
     protected $casts = [
         'tanggal' => 'date',
     ];

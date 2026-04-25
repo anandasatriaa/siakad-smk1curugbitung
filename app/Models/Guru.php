@@ -13,6 +13,8 @@ class Guru extends Model
 {
     use HasFactory;
 
+    protected $table = 'guru';
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

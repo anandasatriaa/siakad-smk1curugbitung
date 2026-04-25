@@ -12,6 +12,8 @@ class Nilai extends Model
 {
     use HasFactory;
 
+    protected $table = 'nilai';
+
     public function siswa(): BelongsTo
     {
         return $this->belongsTo(Siswa::class);

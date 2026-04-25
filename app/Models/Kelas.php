@@ -11,6 +11,8 @@ class Kelas extends Model
 {
     use HasFactory;
 
+    protected $table = 'kelas';
+
     protected $fillable = ['nama_kelas', 'wali_kelas_id'];
 
     public function wali_kelas(): BelongsTo

@@ -10,6 +10,8 @@ class JadwalPelajaran extends Model
 {
     use HasFactory;
 
+    protected $table = 'jadwal_pelajaran';
+
     protected $fillable = ['kelas_id', 'mapel_id', 'guru_id', 'hari', 'jam_mulai', 'jam_selesai'];
 
     public function kelas(): BelongsTo

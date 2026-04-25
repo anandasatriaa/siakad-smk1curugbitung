@@ -12,6 +12,8 @@ class MataPelajaran extends Model
 {
     use HasFactory;
 
+    protected $table = 'mata_pelajaran';
+
     public function jadwalPelajaran(): HasMany
     {
         return $this->hasMany(JadwalPelajaran::class, 'mapel_id');

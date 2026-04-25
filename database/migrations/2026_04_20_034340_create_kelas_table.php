@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('kelas', function (Blueprint $table) {
             $table->id();
             $table->string('nama_kelas');
-            $table->foreignId('wali_kelas_id')->nullable()->constrained('gurus')->nullOnDelete();
+            $table->foreignId('wali_kelas_id')->nullable()->constrained('guru')->nullOnDelete();
             $table->timestamps();
         });
     }
