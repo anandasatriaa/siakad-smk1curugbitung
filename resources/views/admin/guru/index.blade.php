@@ -20,7 +20,7 @@
                     Guru</a>
             </div>
             <div class="table-responsive text-nowrap">
-                <table class="table">
+                <table class="table datatable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -33,7 +33,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        @forelse($gurus as $guru)
+                        @foreach($gurus as $guru)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
@@ -68,11 +68,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center">Data guru masih kosong.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

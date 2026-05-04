@@ -20,7 +20,7 @@
                     Mapel</a>
             </div>
             <div class="table-responsive text-nowrap">
-                <table class="table">
+                <table class="table datatable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -30,7 +30,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        @forelse($mapels as $mapel)
+                        @foreach($mapels as $mapel)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td><span class="badge bg-label-info">{{ $mapel->kode_mapel }}</span></td>
@@ -50,11 +50,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="text-center">Data mata pelajaran kosong.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

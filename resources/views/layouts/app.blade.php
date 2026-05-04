@@ -54,6 +54,7 @@
     <link rel="stylesheet" href="{{ asset('assets/') }}/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <link rel="stylesheet" href="{{ asset('assets/') }}/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css">
 
     <!-- Page CSS -->
 
@@ -139,5 +140,18 @@
 
     <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/2.3.8/js/dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.datatable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/2.3.8/i18n/id.json"
+                }
+            });
+        });
+    </script>
   </body>
 </html>

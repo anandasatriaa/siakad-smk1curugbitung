@@ -20,7 +20,7 @@
                     Siswa</a>
             </div>
             <div class="table-responsive text-nowrap">
-                <table class="table">
+                <table class="table datatable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -34,7 +34,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        @forelse($siswas as $siswa)
+                        @foreach($siswas as $siswa)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
@@ -70,11 +70,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center">Data siswa masih kosong.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
