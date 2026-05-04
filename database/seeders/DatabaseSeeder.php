@@ -22,28 +22,28 @@ class DatabaseSeeder extends Seeder
         $superadmin = User::create([
             'name' => 'Superadmin',
             'email' => 'superadmin@smkn1curugbitung.sch.id',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('smkn1curugbitung'),
             'role' => 'superadmin',
         ]);
 
         $admin = User::create([
             'name' => 'Admin Sekolah',
             'email' => 'admin@smkn1curugbitung.sch.id',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('smkn1curugbitung'),
             'role' => 'admin',
         ]);
 
         $guruUser = User::create([
             'name' => 'Budi Santoso, S.Kom',
             'email' => 'guru@smkn1curugbitung.sch.id',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('smkn1curugbitung'),
             'role' => 'guru',
         ]);
 
         $siswaUser = User::create([
             'name' => 'Ahmad Reza',
             'email' => 'siswa@smkn1curugbitung.sch.id',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('smkn1curugbitung'),
             'role' => 'siswa',
         ]);
 
