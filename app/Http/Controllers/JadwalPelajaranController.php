@@ -12,7 +12,17 @@ class JadwalPelajaranController extends Controller
 {
     public function index()
     {
-        $jadwals = JadwalPelajaran::with(['kelas', 'mata_pelajaran', 'guru'])->orderBy('hari')->orderBy('jam_mulai')->get();
+        $jadwals = JadwalPelajaran::with(['kelas', 'mata_pelajaran', 'guru'])
+            ->join('kelas', 'jadwal_pelajaran.kelas_id', '=', 'kelas.id')
+            ->select('jadwal_pelajaran.*')
+            ->orderBy('kelas.nama_kelas')
+            ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu')")
+            ->orderBy('jam_mulai')
+            ->get()
+            ->groupBy(function($item) {
+                return $item->kelas->nama_kelas;
+            });
+            
         return view('admin.jadwal.index', compact('jadwals'));
     } 
 
