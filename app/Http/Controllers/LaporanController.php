@@ -45,7 +45,7 @@ class LaporanController extends Controller
                 ->get();
                 
             foreach ($nilais as $n) {
-                $nilaiData[$n->siswa_id][$n->mapel_id] = $n->nilai_akhir;
+                $nilaiData[$n->siswa_id][$n->mapel_id] = $n;
             }
         }
 

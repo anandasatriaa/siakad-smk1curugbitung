@@ -68,19 +68,27 @@
                         <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th rowspan="2" class="align-middle text-center">No</th>
-                                    <th rowspan="2" class="align-middle text-center">NIS</th>
-                                    <th rowspan="2" class="align-middle text-center">Nama Siswa</th>
+                                    <th rowspan="3" class="align-middle text-center">No</th>
+                                    <th rowspan="3" class="align-middle text-center">NIS</th>
+                                    <th rowspan="3" class="align-middle text-center">Nama Siswa</th>
                                     @if(count($mapels) > 0)
-                                        <th colspan="{{ count($mapels) }}" class="text-center">Mata Pelajaran</th>
+                                        <th colspan="{{ count($mapels) * 4 }}" class="text-center">Mata Pelajaran</th>
                                     @else
-                                        <th rowspan="2" class="align-middle text-center">Nilai Mata Pelajaran</th>
+                                        <th rowspan="3" class="align-middle text-center">Nilai Mata Pelajaran</th>
                                     @endif
                                 </tr>
                                 @if(count($mapels) > 0)
                                     <tr>
                                         @foreach($mapels as $mapel)
-                                            <th class="text-center">{{ $mapel->nama_mapel }}</th>
+                                            <th colspan="4" class="text-center small">{{ $mapel->nama_mapel }}</th>
+                                        @endforeach
+                                    </tr>
+                                    <tr>
+                                        @foreach($mapels as $mapel)
+                                            <th class="text-center small" style="font-size: 0.7rem;">TGS</th>
+                                            <th class="text-center small" style="font-size: 0.7rem;">UTS</th>
+                                            <th class="text-center small" style="font-size: 0.7rem;">UAS</th>
+                                            <th class="text-center small bg-light" style="font-size: 0.7rem;">AKH</th>
                                         @endforeach
                                     </tr>
                                 @endif
@@ -93,9 +101,13 @@
                                         <td>{{ $s->nama_siswa }}</td>
                                         @if(count($mapels) > 0)
                                             @foreach($mapels as $mapel)
-                                                <td class="text-center">
-                                                    {{ isset($nilaiData[$s->id][$mapel->id]) ? $nilaiData[$s->id][$mapel->id] : '-' }}
-                                                </td>
+                                                @php
+                                                    $nilai = $nilaiData[$s->id][$mapel->id] ?? null;
+                                                @endphp
+                                                <td class="text-center small">{{ $nilai ? number_format($nilai->nilai_tugas, 0) : '-' }}</td>
+                                                <td class="text-center small">{{ $nilai ? number_format($nilai->nilai_uts, 0) : '-' }}</td>
+                                                <td class="text-center small">{{ $nilai ? number_format($nilai->nilai_uas, 0) : '-' }}</td>
+                                                <td class="text-center small bg-light fw-bold">{{ $nilai ? number_format($nilai->nilai_akhir, 1) : '-' }}</td>
                                             @endforeach
                                         @else
                                             <td class="text-center text-muted">Belum ada mata pelajaran</td>
