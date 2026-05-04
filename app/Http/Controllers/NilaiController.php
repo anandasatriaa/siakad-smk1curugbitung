@@ -66,7 +66,7 @@ class NilaiController extends Controller
                 ->get();
 
             foreach ($nilais as $n) {
-                $nilaiExisting[$n->siswa_id] = $n->nilai_akhir;
+                $nilaiExisting[$n->siswa_id] = $n;
             }
         }
 
@@ -86,8 +86,12 @@ class NilaiController extends Controller
             'mapel_id' => 'required|exists:mata_pelajaran,id',
             'semester' => 'required|in:Ganjil,Genap',
             'tahun_ajaran' => 'required|string',
-            'nilai' => 'required|array',
-            'nilai.*' => 'nullable|numeric|min:0|max:100',
+            'tugas' => 'required|array',
+            'tugas.*' => 'nullable|numeric|min:0|max:100',
+            'uts' => 'required|array',
+            'uts.*' => 'nullable|numeric|min:0|max:100',
+            'uas' => 'required|array',
+            'uas.*' => 'nullable|numeric|min:0|max:100',
         ]);
 
         $user = Auth::user();
@@ -104,8 +108,19 @@ class NilaiController extends Controller
             }
         }
 
-        foreach ($request->nilai as $siswa_id => $nilai_akhir) {
-            if ($nilai_akhir !== null && $nilai_akhir !== '') {
+        foreach ($request->tugas as $siswa_id => $nilai_tugas) {
+            $nilai_uts = $request->uts[$siswa_id] ?? null;
+            $nilai_uas = $request->uas[$siswa_id] ?? null;
+
+            if ($nilai_tugas !== null || $nilai_uts !== null || $nilai_uas !== null) {
+                $t = floatval($nilai_tugas ?? 0);
+                $ut = floatval($nilai_uts ?? 0);
+                $ua = floatval($nilai_uas ?? 0);
+                
+                // Calculate average
+                $count = 3;
+                $nilai_akhir = ($t + $ut + $ua) / $count;
+
                 Nilai::updateOrCreate(
                     [
                         'siswa_id' => $siswa_id,
@@ -114,6 +129,9 @@ class NilaiController extends Controller
                         'tahun_ajaran' => $request->tahun_ajaran,
                     ],
                     [
+                        'nilai_tugas' => $nilai_tugas,
+                        'nilai_uts' => $nilai_uts,
+                        'nilai_uas' => $nilai_uas,
                         'nilai_akhir' => $nilai_akhir,
                     ]
                 );

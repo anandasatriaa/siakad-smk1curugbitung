@@ -95,20 +95,32 @@
                                     <th>No</th>
                                     <th>NIS</th>
                                     <th>Nama Siswa</th>
-                                    <th>Nilai Akhir (0-100)</th>
+                                    <th>Nilai Tugas</th>
+                                    <th>Nilai UTS</th>
+                                    <th>Nilai UAS</th>
+                                    <th>Nilai Akhir</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($siswas as $index => $s)
                                     @php
-                                        $nilai_akhir = isset($nilaiExisting[$s->id]) ? $nilaiExisting[$s->id] : '';
+                                        $nilai = isset($nilaiExisting[$s->id]) ? $nilaiExisting[$s->id] : null;
                                     @endphp
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $s->nis }}</td>
                                         <td>{{ $s->nama_siswa }}</td>
                                         <td>
-                                            <input type="number" step="0.01" min="0" max="100" name="nilai[{{ $s->id }}]" class="form-control" value="{{ $nilai_akhir }}" placeholder="Input Nilai">
+                                            <input type="number" step="0.01" min="0" max="100" name="tugas[{{ $s->id }}]" class="form-control input-nilai tugas" value="{{ $nilai->nilai_tugas ?? '' }}" placeholder="0 - 100" data-id="{{ $s->id }}">
+                                        </td>
+                                        <td>
+                                            <input type="number" step="0.01" min="0" max="100" name="uts[{{ $s->id }}]" class="form-control input-nilai uts" value="{{ $nilai->nilai_uts ?? '' }}" placeholder="0 - 100" data-id="{{ $s->id }}">
+                                        </td>
+                                        <td>
+                                            <input type="number" step="0.01" min="0" max="100" name="uas[{{ $s->id }}]" class="form-control input-nilai uas" value="{{ $nilai->nilai_uas ?? '' }}" placeholder="0 - 100" data-id="{{ $s->id }}">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control bg-light akhir-{{ $s->id }}" value="{{ $nilai->nilai_akhir ?? '' }}" readonly placeholder="Otomatis">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -129,3 +141,35 @@
     @endif
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        function calculateAverage(row) {
+            let id = row.find('.tugas').data('id');
+            let tugas = row.find('.tugas').val();
+            let uts = row.find('.uts').val();
+            let uas = row.find('.uas').val();
+
+            if (tugas !== '' || uts !== '' || uas !== '') {
+                let t = parseFloat(tugas) || 0;
+                let ut = parseFloat(uts) || 0;
+                let ua = parseFloat(uas) || 0;
+                
+                let average = (t + ut + ua) / 3;
+                row.find('.akhir-' + id).val(average.toFixed(2));
+            } else {
+                row.find('.akhir-' + id).val('');
+            }
+        }
+
+        $('.input-nilai').on('input change', function() {
+            calculateAverage($(this).closest('tr'));
+        });
+
+        $('.table tbody tr').each(function() {
+            calculateAverage($(this));
+        });
+    });
+</script>
+@endpush

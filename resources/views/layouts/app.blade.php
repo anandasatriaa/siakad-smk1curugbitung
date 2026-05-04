@@ -114,8 +114,6 @@
     </div>
     <!-- / Layout wrapper -->
 
-    @stack('scripts')
-
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="{{ asset('assets/') }}/vendor/libs/jquery/jquery.js"></script>
@@ -153,5 +151,6 @@
             });
         });
     </script>
+    @stack('scripts')
   </body>
 </html>
