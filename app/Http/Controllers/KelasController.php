@@ -25,7 +25,7 @@ class KelasController extends Controller
     {
         $request->validate([
             'nama_kelas' => 'required|string|max:100|unique:kelas',
-            'wali_kelas_id' => 'nullable|exists:gurus,id|unique:kelas,wali_kelas_id',
+            'wali_kelas_id' => 'nullable|exists:guru,id|unique:kelas,wali_kelas_id',
         ], [
             'wali_kelas_id.unique' => 'Guru tersebut sudah menjadi wali di kelas lain.'
         ]);
@@ -49,7 +49,7 @@ class KelasController extends Controller
     {
         $request->validate([
             'nama_kelas' => 'required|string|max:100|unique:kelas,nama_kelas,' . $kela->id,
-            'wali_kelas_id' => 'nullable|exists:gurus,id|unique:kelas,wali_kelas_id,' . $kela->id,
+            'wali_kelas_id' => 'nullable|exists:guru,id|unique:kelas,wali_kelas_id,' . $kela->id,
         ], [
             'wali_kelas_id.unique' => 'Guru tersebut sudah menjadi wali di kelas lain.'
         ]);

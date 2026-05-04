@@ -24,7 +24,7 @@ class GuruController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip' => 'required|string|max:50|unique:gurus',
+            'nip' => 'required|string|max:50|unique:guru',
             'nama_guru' => 'required|string|max:255',
             'no_telp' => 'nullable|string|max:20',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -49,7 +49,7 @@ class GuruController extends Controller
         ];
 
         if ($request->hasFile('foto')) {
-            $data['foto'] = $request->file('foto')->store('gurus', 'public');
+            $data['foto'] = $request->file('foto')->store('guru', 'public');
         }
 
         Guru::create($data);
@@ -65,7 +65,7 @@ class GuruController extends Controller
     public function update(Request $request, Guru $guru)
     {
         $request->validate([
-            'nip' => 'required|string|max:50|unique:gurus,nip,' . $guru->id,
+            'nip' => 'required|string|max:50|unique:guru,nip,' . $guru->id,
             'nama_guru' => 'required|string|max:255',
             'no_telp' => 'nullable|string|max:20',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -77,7 +77,7 @@ class GuruController extends Controller
             if ($guru->foto) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($guru->foto);
             }
-            $data['foto'] = $request->file('foto')->store('gurus', 'public');
+            $data['foto'] = $request->file('foto')->store('guru', 'public');
         }
 
         $guru->update($data);

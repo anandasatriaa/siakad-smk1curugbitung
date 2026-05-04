@@ -54,7 +54,7 @@ class ProfileController extends Controller
                     if ($guru->foto) {
                         Storage::disk('public')->delete($guru->foto);
                     }
-                    $guru->foto = $request->file('foto')->store('gurus', 'public');
+                    $guru->foto = $request->file('foto')->store('guru', 'public');
                 }
                 $guru->save();
             }
