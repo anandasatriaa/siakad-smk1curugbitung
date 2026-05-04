@@ -67,7 +67,7 @@ class ProfileController extends Controller
                     if ($siswa->foto) {
                         Storage::disk('public')->delete($siswa->foto);
                     }
-                    $siswa->foto = $request->file('foto')->store('siswas', 'public');
+                    $siswa->foto = $request->file('foto')->store('siswa', 'public');
                 }
                 $siswa->save();
             }

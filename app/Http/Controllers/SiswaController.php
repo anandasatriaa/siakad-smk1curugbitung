@@ -26,7 +26,7 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nis' => 'required|string|max:50|unique:siswas',
+            'nis' => 'required|string|max:50|unique:siswa',
             'nama_siswa' => 'required|string|max:255',
             'kelas_id' => 'required|exists:kelas,id',
             'jabatan' => 'nullable|string|max:100',
@@ -52,7 +52,7 @@ class SiswaController extends Controller
         ];
 
         if ($request->hasFile('foto')) {
-            $data['foto'] = $request->file('foto')->store('siswas', 'public');
+            $data['foto'] = $request->file('foto')->store('siswa', 'public');
         }
 
         Siswa::create($data);
@@ -69,7 +69,7 @@ class SiswaController extends Controller
     public function update(Request $request, Siswa $siswa)
     {
         $request->validate([
-            'nis' => 'required|string|max:50|unique:siswas,nis,' . $siswa->id,
+            'nis' => 'required|string|max:50|unique:siswa,nis,' . $siswa->id,
             'nama_siswa' => 'required|string|max:255',
             'kelas_id' => 'required|exists:kelas,id',
             'jabatan' => 'nullable|string|max:100',
@@ -82,7 +82,7 @@ class SiswaController extends Controller
             if ($siswa->foto) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($siswa->foto);
             }
-            $data['foto'] = $request->file('foto')->store('siswas', 'public');
+            $data['foto'] = $request->file('foto')->store('siswa', 'public');
         }
 
         $siswa->update($data);

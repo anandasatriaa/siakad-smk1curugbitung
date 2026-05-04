@@ -20,7 +20,7 @@ class Kelas extends Model
         return $this->belongsTo(Guru::class, 'wali_kelas_id');
     }
 
-    public function siswas(): HasMany
+    public function siswa(): HasMany
     {
         return $this->hasMany(Siswa::class);
     }
