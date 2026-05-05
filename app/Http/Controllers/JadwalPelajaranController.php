@@ -12,24 +12,21 @@ class JadwalPelajaranController extends Controller
 {
     public function index(Request $request)
     {
-        $tahun_ajaran = $request->input('tahun_ajaran');
-        $semester = $request->input('semester');
+        $periode_id = $request->input('periode_id');
 
         // Jika tidak ada filter, ambil periode yang aktif
-        if (!$tahun_ajaran || !$semester) {
+        if (!$periode_id) {
             $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
-            if ($activePeriode) {
-                $tahun_ajaran = $activePeriode->tahun_ajaran;
-                $semester = $activePeriode->semester;
-            }
+            $periode_id = $activePeriode ? $activePeriode->id : null;
         }
 
-        $tahun_ajaran_options = \App\Models\PeriodeAkademik::select('tahun_ajaran')->distinct()->pluck('tahun_ajaran');
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
 
         $jadwals = JadwalPelajaran::with(['kelas.periode', 'mata_pelajaran', 'guru'])
-            ->whereHas('kelas.periode', function($q) use ($tahun_ajaran, $semester) {
-                if ($tahun_ajaran) $q->where('tahun_ajaran', $tahun_ajaran);
-                if ($semester) $q->where('semester', $semester);
+            ->when($periode_id, function($q) use ($periode_id) {
+                $q->whereHas('kelas', function($q) use ($periode_id) {
+                    $q->where('periode_id', $periode_id);
+                });
             })
             ->join('kelas', 'jadwal_pelajaran.kelas_id', '=', 'kelas.id')
             ->select('jadwal_pelajaran.*')
@@ -41,7 +38,7 @@ class JadwalPelajaranController extends Controller
                 return $item->kelas->nama_kelas;
             });
             
-        return view('admin.jadwal.index', compact('jadwals', 'semester', 'tahun_ajaran', 'tahun_ajaran_options'));
+        return view('admin.jadwal.index', compact('jadwals', 'periode_id', 'periodes'));
     } 
 
     public function create(Request $request)

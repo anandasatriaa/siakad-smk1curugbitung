@@ -21,21 +21,14 @@
             </div>
             <div class="card-body">
                 <form action="{{ route('admin.kelas.index') }}" method="GET" class="row g-3 mb-4">
-                    <div class="col-md-4">
-                        <label class="form-label">Tahun Ajaran</label>
-                        <select name="tahun_ajaran" class="form-select" onchange="this.form.submit()">
-                            @foreach ($tahun_ajaran_options as $option)
-                                <option value="{{ $option }}" {{ $tahun_ajaran == $option ? 'selected' : '' }}>
-                                    {{ $option }}
+                    <div class="col-md-6">
+                        <label class="form-label" for="periode_id">Filter Periode Akademik</label>
+                        <select name="periode_id" class="form-select" onchange="this.form.submit()">
+                            @foreach ($periodes as $p)
+                                <option value="{{ $p->id }}" {{ $periode_id == $p->id ? 'selected' : '' }}>
+                                    {{ $p->tahun_ajaran }} - {{ $p->semester }} {{ $p->is_aktif ? '(Aktif)' : '' }}
                                 </option>
                             @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">Semester</label>
-                        <select name="semester" class="form-select" onchange="this.form.submit()">
-                            <option value="Ganjil" {{ $semester == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
-                            <option value="Genap" {{ $semester == 'Genap' ? 'selected' : '' }}>Genap</option>
                         </select>
                     </div>
                 </form>
