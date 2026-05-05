@@ -20,9 +20,9 @@
             @else
                 <form action="{{ route('guru.laporan.export') }}" method="GET">
                     <div class="row gx-3 gy-2 align-items-end">
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label class="form-label" for="kelas_id">Kelas Wali</label>
-                            <select class="form-select" id="kelas_id" name="kelas_id" required>
+                            <select class="form-select" id="kelas_id" name="kelas_id" onchange="this.form.submit()" required>
                                 <option value="">-- Pilih Kelas --</option>
                                 @foreach($kelasList as $kelas)
                                     <option value="{{ $kelas->id }}" {{ $kelas_id == $kelas->id ? 'selected' : '' }}>
@@ -31,28 +31,16 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label" for="semester">Semester</label>
-                            <select class="form-select" id="semester" name="semester" required>
-                                <option value="Ganjil" {{ $semester == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
-                                <option value="Genap" {{ $semester == 'Genap' ? 'selected' : '' }}>Genap</option>
+                        <div class="col-md-6">
+                            <label class="form-label" for="periode_id">Periode Akademik</label>
+                            <select class="form-select" id="periode_id" name="periode_id" onchange="this.form.submit()" required>
+                                <option value="">-- Pilih Periode --</option>
+                                @foreach($periodes as $p)
+                                    <option value="{{ $p->id }}" {{ $periode_id == $p->id ? 'selected' : '' }}>
+                                        {{ $p->tahun_ajaran }} - {{ $p->semester }} {{ $p->is_aktif ? '(Aktif)' : '' }}
+                                    </option>
+                                @endforeach
                             </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label" for="tahun_ajaran">Tahun Ajaran</label>
-                            <select class="form-select" id="tahun_ajaran" name="tahun_ajaran" required>
-                                @php
-                                    $startYear = 2024;
-                                    $endYear = max($startYear, (int)date('Y') + 5);
-                                @endphp
-                                @for($y = $startYear; $y <= $endYear; $y++)
-                                    @php $ta = $y . '/' . ($y + 1); @endphp
-                                    <option value="{{ $ta }}" {{ $tahun_ajaran == $ta ? 'selected' : '' }}>{{ $ta }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary w-100"><i class="bx bx-search me-1"></i> Tampilkan Siswa</button>
                         </div>
                     </div>
                 </form>
@@ -84,7 +72,7 @@
                                         <td>{{ $s->nis }}</td>
                                         <td>{{ $s->nama_siswa }}</td>
                                         <td>
-                                            <a href="{{ route('guru.laporan.download', ['siswa_id' => $s->id, 'semester' => $semester, 'tahun_ajaran' => $tahun_ajaran]) }}" target="_blank" class="btn btn-sm btn-danger">
+                                            <a href="{{ route('guru.laporan.download', ['siswa_id' => $s->id, 'periode_id' => $periode_id]) }}" target="_blank" class="btn btn-sm btn-danger">
                                                 <i class="bx bxs-file-pdf me-1"></i> Cetak Laporan PDF
                                             </a>
                                         </td>

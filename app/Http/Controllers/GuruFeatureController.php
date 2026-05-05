@@ -25,36 +25,32 @@ class GuruFeatureController extends Controller
 
     public function jadwalMengajar(Request $request)
     {
-        $semester = $request->input('semester', 'Ganjil');
-        $tahun_ajaran = $request->input('tahun_ajaran', date('Y') . '/' . (date('Y') + 1));
+        $periode_id = $request->input('periode_id');
+
+        // Jika tidak ada filter periode, ambil yang aktif
+        if (!$periode_id) {
+            $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
+            $periode_id = $activePeriode ? $activePeriode->id : null;
+        }
+
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
+
+        $query = JadwalPelajaran::with(['kelas.periode', 'mata_pelajaran', 'guru'])
+            ->whereHas('kelas', function($q) use ($periode_id) {
+                if ($periode_id) $q->where('periode_id', $periode_id);
+            })
+            ->orderBy('hari')
+            ->orderBy('jam_mulai');
 
         $user = Auth::user();
-        if ($user->role === 'superadmin') {
-            $jadwals = JadwalPelajaran::with(['kelas', 'mata_pelajaran', 'guru'])
-                ->where('semester', $semester)
-                ->where('tahun_ajaran', $tahun_ajaran)
-                ->orderBy('hari')
-                ->orderBy('jam_mulai')
-                ->get();
-        } else {
+        if ($user->role !== 'superadmin') {
             $guru = $this->getGuru();
-            $jadwals = JadwalPelajaran::with(['kelas', 'mata_pelajaran'])
-                ->where('guru_id', $guru->id)
-                ->where('semester', $semester)
-                ->where('tahun_ajaran', $tahun_ajaran)
-                ->orderBy('hari')
-                ->orderBy('jam_mulai')
-                ->get();
+            $query->where('guru_id', $guru->id);
         }
 
-        $tahun_ajaran_options = [];
-        $currentYear = date('Y');
-        for ($i = -2; $i <= 2; $i++) {
-            $year = $currentYear + $i;
-            $tahun_ajaran_options[] = $year . '/' . ($year + 1);
-        }
+        $jadwals = $query->get();
 
-        return view('guru.jadwal_mengajar', compact('jadwals', 'semester', 'tahun_ajaran', 'tahun_ajaran_options'));
+        return view('guru.jadwal_mengajar', compact('jadwals', 'periode_id', 'periodes'));
     }
 
     public function siswaKelas(Request $request)
@@ -113,43 +109,50 @@ class GuruFeatureController extends Controller
             $kelasList = Kelas::all();
         } else {
             $guru = $this->getGuru();
-            // Wali kelas exports reports. Or allow to export for any class they teach? 
-            // The prompt says "export laporan nya isinya adalah hasil seperti raport siswa per semester". Raport usually accessed by wali kelas. Let's make it Wali Kelas only or superadmin.
             $kelasList = Kelas::where('wali_kelas_id', $guru->id)->get();
         }
 
         $kelas_id = $request->input('kelas_id');
-        $semester = $request->input('semester', 'Ganjil');
-        $tahun_ajaran = $request->input('tahun_ajaran', date('Y') . '/' . (date('Y')+1));
+        $periode_id = $request->input('periode_id');
+
+        // Jika tidak ada filter periode, ambil yang aktif
+        if (!$periode_id) {
+            $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
+            $periode_id = $activePeriode ? $activePeriode->id : null;
+        }
+
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
 
         $siswas = [];
         if ($kelas_id) {
             $siswas = Siswa::where('kelas_id', $kelas_id)->get();
         }
 
-        return view('guru.export_laporan', compact('kelasList', 'kelas_id', 'semester', 'tahun_ajaran', 'siswas'));
+        return view('guru.export_laporan', compact('kelasList', 'kelas_id', 'periode_id', 'periodes', 'siswas'));
     }
 
     public function downloadRaport(Request $request)
     {
         $siswa_id = $request->input('siswa_id');
-        $semester = $request->input('semester');
-        $tahun_ajaran = $request->input('tahun_ajaran');
+        $periode_id = $request->input('periode_id');
 
         $siswa = Siswa::with('kelas')->findOrFail($siswa_id);
+        $periode = \App\Models\PeriodeAkademik::findOrFail($periode_id);
         
         $nilais = Nilai::with('mataPelajaran')
             ->where('siswa_id', $siswa_id)
-            ->where('semester', $semester)
-            ->where('tahun_ajaran', $tahun_ajaran)
+            ->where('periode_id', $periode_id)
             ->get();
             
         $absensiSummary = [
-            'hadir' => Absensi::where('siswa_id', $siswa_id)->where('status', 'hadir')->count(),
-            'sakit' => Absensi::where('siswa_id', $siswa_id)->where('status', 'sakit')->count(),
-            'izin' => Absensi::where('siswa_id', $siswa_id)->where('status', 'izin')->count(),
-            'alpa' => Absensi::where('siswa_id', $siswa_id)->where('status', 'alpa')->count(),
+            'hadir' => Absensi::where('siswa_id', $siswa_id)->where('periode_id', $periode_id)->where('status', 'hadir')->count(),
+            'sakit' => Absensi::where('siswa_id', $siswa_id)->where('periode_id', $periode_id)->where('status', 'sakit')->count(),
+            'izin' => Absensi::where('siswa_id', $siswa_id)->where('periode_id', $periode_id)->where('status', 'izin')->count(),
+            'alpa' => Absensi::where('siswa_id', $siswa_id)->where('periode_id', $periode_id)->where('status', 'alpa')->count(),
         ];
+
+        $semester = $periode->semester;
+        $tahun_ajaran = $periode->tahun_ajaran;
 
         $pdf = Pdf::loadView('guru.laporan_pdf', compact('siswa', 'nilais', 'semester', 'tahun_ajaran', 'absensiSummary'));
         

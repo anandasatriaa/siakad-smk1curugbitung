@@ -19,26 +19,17 @@
 
     <div class="card mb-4 shadow-sm border-0">
         <div class="card-body">
-            <form action="{{ route('guru.jadwal_mengajar') }}" method="GET" class="row gx-3 gy-2 align-items-center">
-                <div class="col-md-4">
-                    <label class="form-label" for="tahun_ajaran">Tahun Ajaran</label>
-                    <select name="tahun_ajaran" id="tahun_ajaran" class="form-select">
-                        @foreach($tahun_ajaran_options as $ta)
-                            <option value="{{ $ta }}" {{ $tahun_ajaran == $ta ? 'selected' : '' }}>{{ $ta }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label" for="semester">Semester</label>
-                    <select name="semester" id="semester" class="form-select">
-                        <option value="Ganjil" {{ $semester == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
-                        <option value="Genap" {{ $semester == 'Genap' ? 'selected' : '' }}>Genap</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label d-block">&nbsp;</label>
-                    <button type="submit" class="btn btn-primary"><i class="bx bx-search me-1"></i> Tampilkan</button>
-                </div>
+            <form action="{{ route('guru.jadwal.mengajar') }}" method="GET" class="row gx-3 gy-2 align-items-center">
+                    <div class="col-md-12">
+                        <label class="form-label" for="periode_id">Filter Periode Akademik</label>
+                        <select name="periode_id" id="periode_id" class="form-select" onchange="this.form.submit()">
+                            @foreach($periodes as $p)
+                                <option value="{{ $p->id }}" {{ $periode_id == $p->id ? 'selected' : '' }}>
+                                    {{ $p->tahun_ajaran }} - {{ $p->semester }} {{ $p->is_aktif ? '(Aktif)' : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
             </form>
         </div>
     </div>
