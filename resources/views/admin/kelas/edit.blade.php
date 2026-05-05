@@ -37,6 +37,29 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="tahun_ajaran">Tahun Ajaran</label>
+                                <select class="form-select @error('tahun_ajaran') is-invalid @enderror" id="tahun_ajaran" name="tahun_ajaran" required>
+                                    @foreach($tahun_ajaran_options as $option)
+                                        <option value="{{ $option }}" {{ old('tahun_ajaran', $kelas->tahun_ajaran) == $option ? 'selected' : '' }}>{{ $option }}</option>
+                                    @endforeach
+                                </select>
+                                @error('tahun_ajaran')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="semester">Semester</label>
+                                <select class="form-select @error('semester') is-invalid @enderror" id="semester" name="semester" required>
+                                    <option value="Ganjil" {{ old('semester', $kelas->semester) == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
+                                    <option value="Genap" {{ old('semester', $kelas->semester) == 'Genap' ? 'selected' : '' }}>Genap</option>
+                                </select>
+                                @error('semester')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
 
                         <button type="submit" class="btn btn-primary"><i class="bx bx-save me-1"></i> Update Data</button>
                         <a href="{{ route('admin.kelas.index') }}" class="btn btn-outline-secondary"><i class="bx bx-x-circle me-1"></i> Batal</a>

@@ -19,6 +19,27 @@
                 <a href="{{ route('admin.kelas.create') }}" class="btn btn-primary"><i class='bx bx-plus me-1'></i>Tambah
                     Kelas</a>
             </div>
+            <div class="card-body">
+                <form action="{{ route('admin.kelas.index') }}" method="GET" class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label">Tahun Ajaran</label>
+                        <select name="tahun_ajaran" class="form-select" onchange="this.form.submit()">
+                            @foreach ($tahun_ajaran_options as $option)
+                                <option value="{{ $option }}" {{ $tahun_ajaran == $option ? 'selected' : '' }}>
+                                    {{ $option }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Semester</label>
+                        <select name="semester" class="form-select" onchange="this.form.submit()">
+                            <option value="Ganjil" {{ $semester == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
+                            <option value="Genap" {{ $semester == 'Genap' ? 'selected' : '' }}>Genap</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
             <div class="table-responsive text-nowrap">
                 <table class="table datatable">
                     <thead>

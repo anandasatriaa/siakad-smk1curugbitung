@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nama_kelas');
             $table->foreignId('wali_kelas_id')->nullable()->constrained('guru')->nullOnDelete();
+            $table->string('tahun_ajaran');
+            $table->string('semester');
             $table->timestamps();
         });
     }
