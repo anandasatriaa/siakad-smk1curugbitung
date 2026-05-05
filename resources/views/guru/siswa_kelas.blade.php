@@ -14,10 +14,20 @@
         </div>
         <div class="card-body">
             <form action="{{ route('guru.siswa.kelas') }}" method="GET">
-                <div class="row gx-3 gy-2 align-items-end">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
+                        <label class="form-label" for="periode_id">Periode Akademik</label>
+                        <select class="form-select" id="periode_id" name="periode_id" onchange="this.form.submit()" required>
+                            <option value="">-- Pilih Periode --</option>
+                            @foreach($periodes as $p)
+                                <option value="{{ $p->id }}" {{ $periode_id == $p->id ? 'selected' : '' }}>
+                                    {{ $p->tahun_ajaran }} - {{ $p->semester }} {{ $p->is_aktif ? '(Aktif)' : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label" for="kelas_id">Kelas</label>
-                        <select class="form-select" id="kelas_id" name="kelas_id" required>
+                        <select class="form-select" id="kelas_id" name="kelas_id" onchange="this.form.submit()" required>
                             <option value="">-- Pilih Kelas --</option>
                             @foreach($kelasList as $kelas)
                                 <option value="{{ $kelas->id }}" {{ $kelas_id == $kelas->id ? 'selected' : '' }}>
@@ -26,10 +36,6 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100"><i class="bx bx-search me-1"></i> Tampilkan</button>
-                    </div>
-                </div>
             </form>
         </div>
     </div>

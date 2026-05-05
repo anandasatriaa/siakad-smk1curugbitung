@@ -55,12 +55,28 @@ class GuruFeatureController extends Controller
 
     public function siswaKelas(Request $request)
     {
+        $periode_id = $request->input('periode_id');
+
+        // Jika tidak ada filter periode, ambil yang aktif
+        if (!$periode_id) {
+            $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
+            $periode_id = $activePeriode ? $activePeriode->id : null;
+        }
+
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
+
         $user = Auth::user();
         if ($user->role === 'superadmin') {
-            $kelasList = Kelas::all();
+            $kelasList = Kelas::where('periode_id', $periode_id)->get();
         } else {
             $guru = $this->getGuru();
-            $kelasIds = JadwalPelajaran::where('guru_id', $guru->id)->pluck('kelas_id')->unique();
+            // Ambil kelas yang diajar guru pada periode tertentu
+            $kelasIds = JadwalPelajaran::where('guru_id', $guru->id)
+                ->whereHas('kelas', function($q) use ($periode_id) {
+                    $q->where('periode_id', $periode_id);
+                })
+                ->pluck('kelas_id')
+                ->unique();
             $kelasList = Kelas::whereIn('id', $kelasIds)->get();
         }
 
@@ -71,7 +87,7 @@ class GuruFeatureController extends Controller
             $siswas = Siswa::where('kelas_id', $kelas_id)->get();
         }
 
-        return view('guru.siswa_kelas', compact('kelasList', 'kelas_id', 'siswas'));
+        return view('guru.siswa_kelas', compact('kelasList', 'kelas_id', 'siswas', 'periode_id', 'periodes'));
     }
 
     public function riwayatAbsensi(Request $request)
