@@ -45,25 +45,15 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label" for="semester">Semester</label>
-                        <select class="form-select" id="semester" name="semester" required>
-                            <option value="Ganjil" {{ $semester == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
-                            <option value="Genap" {{ $semester == 'Genap' ? 'selected' : '' }}>Genap</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label" for="tahun_ajaran">Tahun Ajaran</label>
-                        <select class="form-select" id="tahun_ajaran" name="tahun_ajaran" required>
-                            @php
-                                $startYear = 2024;
-                                $currentYear = (int)date('Y');
-                                $endYear = max($startYear, $currentYear + 5);
-                            @endphp
-                            @for($y = $startYear; $y <= $endYear; $y++)
-                                @php $ta = $y . '/' . ($y + 1); @endphp
-                                <option value="{{ $ta }}" {{ $tahun_ajaran == $ta ? 'selected' : '' }}>{{ $ta }}</option>
-                            @endfor
+                    <div class="col-md-4">
+                        <label class="form-label" for="periode_id">Periode Akademik</label>
+                        <select class="form-select" id="periode_id" name="periode_id" required>
+                            <option value="">-- Pilih Periode --</option>
+                            @foreach($periodes as $p)
+                                <option value="{{ $p->id }}" {{ $periode_id == $p->id ? 'selected' : '' }}>
+                                    {{ $p->tahun_ajaran }} - {{ $p->semester }} {{ $p->is_aktif ? '(Aktif)' : '' }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-2">
@@ -85,8 +75,7 @@
                     @csrf
                     <input type="hidden" name="kelas_id" value="{{ $kelas_id }}">
                     <input type="hidden" name="mapel_id" value="{{ $mapel_id }}">
-                    <input type="hidden" name="semester" value="{{ $semester }}">
-                    <input type="hidden" name="tahun_ajaran" value="{{ $tahun_ajaran }}">
+                    <input type="hidden" name="periode_id" value="{{ $periode_id }}">
                     
                     <div class="table-responsive text-nowrap mb-3">
                         <table class="table table-bordered">

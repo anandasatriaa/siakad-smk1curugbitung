@@ -40,8 +40,15 @@ class NilaiController extends Controller
 
         $kelas_id = $request->input('kelas_id');
         $mapel_id = $request->input('mapel_id');
-        $semester = $request->input('semester', 'Ganjil');
-        $tahun_ajaran = $request->input('tahun_ajaran', date('Y') . '/' . (date('Y') + 1));
+        $periode_id = $request->input('periode_id');
+
+        // Jika tidak ada filter periode, ambil yang aktif
+        if (!$periode_id) {
+            $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
+            $periode_id = $activePeriode ? $activePeriode->id : null;
+        }
+
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
 
         $siswas = [];
         $nilaiExisting = [];
@@ -61,8 +68,7 @@ class NilaiController extends Controller
 
             $nilais = Nilai::whereIn('siswa_id', $siswas->pluck('id'))
                 ->where('mapel_id', $mapel_id)
-                ->where('semester', $semester)
-                ->where('tahun_ajaran', $tahun_ajaran)
+                ->where('periode_id', $periode_id)
                 ->get();
 
             foreach ($nilais as $n) {
@@ -71,8 +77,8 @@ class NilaiController extends Controller
         }
 
         return view('nilai.index', compact(
-            'isSuperadminOrAdmin', 'kelasList', 'mapelList', 'kelas_id', 'mapel_id',
-            'semester', 'tahun_ajaran', 'siswas', 'nilaiExisting'
+            'isSuperadminOrAdmin', 'kelasList', 'mapelList', 'periodes', 'kelas_id', 'mapel_id',
+            'periode_id', 'siswas', 'nilaiExisting'
         ));
     }
 
@@ -84,8 +90,7 @@ class NilaiController extends Controller
         $request->validate([
             'kelas_id' => 'required|exists:kelas,id',
             'mapel_id' => 'required|exists:mata_pelajaran,id',
-            'semester' => 'required|in:Ganjil,Genap',
-            'tahun_ajaran' => 'required|string',
+            'periode_id' => 'required|exists:periode_akademik,id',
             'tugas' => 'required|array',
             'tugas.*' => 'nullable|numeric|min:0|max:100',
             'uts' => 'required|array',
@@ -125,8 +130,7 @@ class NilaiController extends Controller
                     [
                         'siswa_id' => $siswa_id,
                         'mapel_id' => $request->mapel_id,
-                        'semester' => $request->semester,
-                        'tahun_ajaran' => $request->tahun_ajaran,
+                        'periode_id' => $request->periode_id,
                     ],
                     [
                         'nilai_tugas' => $nilai_tugas,
@@ -141,8 +145,7 @@ class NilaiController extends Controller
         return redirect()->route('nilai.index', [
             'kelas_id' => $request->kelas_id,
             'mapel_id' => $request->mapel_id,
-            'semester' => $request->semester,
-            'tahun_ajaran' => $request->tahun_ajaran
+            'periode_id' => $request->periode_id,
         ])->with('success', 'Data nilai berhasil disimpan.');
     }
 
