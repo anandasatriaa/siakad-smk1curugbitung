@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 
-#[Fillable(['siswa_id', 'mapel_id', 'periode_id', 'nilai_tugas', 'nilai_uts', 'nilai_uas', 'nilai_akhir'])]
-class Nilai extends Model
+class RiwayatKelas extends Model
 {
     use HasFactory;
 
-    protected $table = 'nilai';
+    protected $table = 'riwayat_kelas';
+    protected $fillable = ['siswa_id', 'kelas_id', 'periode_id'];
 
     public function periode(): BelongsTo
     {
@@ -24,8 +23,8 @@ class Nilai extends Model
         return $this->belongsTo(Siswa::class);
     }
 
-    public function mataPelajaran(): BelongsTo
+    public function kelas(): BelongsTo
     {
-        return $this->belongsTo(MataPelajaran::class, 'mapel_id');
+        return $this->belongsTo(Kelas::class);
     }
 }

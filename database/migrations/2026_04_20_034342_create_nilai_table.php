@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('siswa_id')->constrained('siswa')->onDelete('cascade');
             $table->foreignId('mapel_id')->constrained('mata_pelajaran')->onDelete('cascade');
-            $table->string('semester');
-            $table->string('tahun_ajaran');
+            $table->foreignId('periode_id')->constrained('periode_akademik')->cascadeOnDelete();
             $table->decimal('nilai_tugas', 5, 2)->nullable();
             $table->decimal('nilai_uts', 5, 2)->nullable();
             $table->decimal('nilai_uas', 5, 2)->nullable();

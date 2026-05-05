@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->enum('status', ['hadir', 'sakit', 'izin', 'alpa'])->default('hadir');
             $table->string('keterangan')->nullable();
+            $table->foreignId('periode_id')->constrained('periode_akademik')->cascadeOnDelete();
             $table->timestamps();
         });
     }

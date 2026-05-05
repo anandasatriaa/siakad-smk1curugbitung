@@ -13,7 +13,12 @@ class Kelas extends Model
 
     protected $table = 'kelas';
 
-    protected $fillable = ['nama_kelas', 'wali_kelas_id', 'tahun_ajaran', 'semester'];
+    protected $fillable = ['nama_kelas', 'wali_kelas_id', 'periode_id'];
+
+    public function periode(): BelongsTo
+    {
+        return $this->belongsTo(PeriodeAkademik::class, 'periode_id');
+    }
 
     public function wali_kelas(): BelongsTo
     {
