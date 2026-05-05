@@ -18,7 +18,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Seed Users
+        // 1. Seed Periode Akademik
+        $periode = \App\Models\PeriodeAkademik::create([
+            'tahun_ajaran' => date('Y') . '/' . (date('Y') + 1),
+            'semester' => 'Ganjil',
+            'is_aktif' => true,
+        ]);
+
+        // 2. Seed Users
         $superadmin = User::create([
             'name' => 'Superadmin',
             'email' => 'superadmin@smkn1curugbitung.sch.id',
@@ -66,11 +73,13 @@ class DatabaseSeeder extends Seeder
         $kelas10RPL = Kelas::create([
             'nama_kelas' => '10 Rekayasa Perangkat Lunak 1',
             'wali_kelas_id' => $guru->id,
+            'periode_id' => $periode->id,
         ]);
 
         $kelas10TKJ = Kelas::create([
             'nama_kelas' => '10 Teknik Komputer Jaringan 1',
             'wali_kelas_id' => $guru2->id,
+            'periode_id' => $periode->id,
         ]);
 
         // 4. Seed Siswa

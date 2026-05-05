@@ -23,21 +23,38 @@ class GuruFeatureController extends Controller
         return Guru::where('user_id', $user->id)->firstOrFail();
     }
 
-    public function jadwalMengajar()
+    public function jadwalMengajar(Request $request)
     {
+        $semester = $request->input('semester', 'Ganjil');
+        $tahun_ajaran = $request->input('tahun_ajaran', date('Y') . '/' . (date('Y') + 1));
+
         $user = Auth::user();
         if ($user->role === 'superadmin') {
-            $jadwals = JadwalPelajaran::with(['kelas', 'mata_pelajaran', 'guru'])->orderBy('hari')->orderBy('jam_mulai')->get();
+            $jadwals = JadwalPelajaran::with(['kelas', 'mata_pelajaran', 'guru'])
+                ->where('semester', $semester)
+                ->where('tahun_ajaran', $tahun_ajaran)
+                ->orderBy('hari')
+                ->orderBy('jam_mulai')
+                ->get();
         } else {
             $guru = $this->getGuru();
             $jadwals = JadwalPelajaran::with(['kelas', 'mata_pelajaran'])
                 ->where('guru_id', $guru->id)
+                ->where('semester', $semester)
+                ->where('tahun_ajaran', $tahun_ajaran)
                 ->orderBy('hari')
                 ->orderBy('jam_mulai')
                 ->get();
         }
 
-        return view('guru.jadwal_mengajar', compact('jadwals'));
+        $tahun_ajaran_options = [];
+        $currentYear = date('Y');
+        for ($i = -2; $i <= 2; $i++) {
+            $year = $currentYear + $i;
+            $tahun_ajaran_options[] = $year . '/' . ($year + 1);
+        }
+
+        return view('guru.jadwal_mengajar', compact('jadwals', 'semester', 'tahun_ajaran', 'tahun_ajaran_options'));
     }
 
     public function siswaKelas(Request $request)

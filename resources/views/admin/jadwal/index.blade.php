@@ -11,6 +11,32 @@
             </a>
         </div>
 
+        <div class="card mb-4">
+            <div class="card-body">
+                <form action="{{ route('admin.jadwal.index') }}" method="GET" class="row gx-3 gy-2 align-items-center">
+                    <div class="col-md-4">
+                        <label class="form-label" for="tahun_ajaran">Tahun Ajaran</label>
+                        <select name="tahun_ajaran" id="tahun_ajaran" class="form-select">
+                            @foreach($tahun_ajaran_options as $ta)
+                                <option value="{{ $ta }}" {{ $tahun_ajaran == $ta ? 'selected' : '' }}>{{ $ta }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="semester">Semester</label>
+                        <select name="semester" id="semester" class="form-select">
+                            <option value="Ganjil" {{ $semester == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
+                            <option value="Genap" {{ $semester == 'Genap' ? 'selected' : '' }}>Genap</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label d-block">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary"><i class="bx bx-search"></i> Tampilkan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         @if (session('success'))
             <div class="alert alert-success alert-dismissible" role="alert">
                 {{ session('success') }}

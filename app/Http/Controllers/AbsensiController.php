@@ -35,6 +35,15 @@ class AbsensiController extends Controller
 
         // Get input parameters
         $tanggal = $request->input('tanggal', date('Y-m-d'));
+        $tahun_ajaran = $request->input('tahun_ajaran', date('Y') . '/' . (date('Y') + 1));
+        $semester = $request->input('semester', 'Ganjil');
+
+        $tahun_ajaran_options = [];
+        $currentYear = date('Y');
+        for ($i = -2; $i <= 2; $i++) {
+            $year = $currentYear + $i;
+            $tahun_ajaran_options[] = $year . '/' . ($year + 1);
+        }
         
         // Determine allowed class
         $kelas_id = $request->input('kelas_id');
@@ -65,7 +74,7 @@ class AbsensiController extends Controller
         }
 
         return view('absensi.index', compact(
-            'isSuperadmin', 'kelasList', 'kelas_id', 'tanggal', 'siswas', 'absensiExisting'
+            'isSuperadmin', 'kelasList', 'kelas_id', 'tanggal', 'siswas', 'absensiExisting', 'tahun_ajaran', 'semester', 'tahun_ajaran_options'
         ));
     }
 
@@ -85,6 +94,8 @@ class AbsensiController extends Controller
         $request->validate([
             'kelas_id' => 'required|exists:kelas,id',
             'tanggal' => 'required|date|before_or_equal:today',
+            'tahun_ajaran' => 'required|string',
+            'semester' => 'required|in:Ganjil,Genap',
             'absensi' => 'required|array',
             'absensi.*.status' => 'required|in:hadir,sakit,izin,alpa',
             'absensi.*.keterangan' => 'nullable|string|max:255',
@@ -115,13 +126,17 @@ class AbsensiController extends Controller
                 [
                     'status' => $data['status'],
                     'keterangan' => $data['keterangan'] ?? null,
+                    'tahun_ajaran' => $request->tahun_ajaran,
+                    'semester' => $request->semester,
                 ]
             );
         }
 
         return redirect()->route('siswa.absensi.index', [
             'kelas_id' => $request->kelas_id, 
-            'tanggal' => $request->tanggal
+            'tanggal' => $request->tanggal,
+            'tahun_ajaran' => $request->tahun_ajaran,
+            'semester' => $request->semester
         ])->with('success', 'Data absensi berhasil disimpan.');
     }
 

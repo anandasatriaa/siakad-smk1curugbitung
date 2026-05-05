@@ -11,10 +11,36 @@
         @if(auth()->user()->role === 'guru')
             <div class="text-end">
                 <span class="badge bg-label-primary p-2 px-3">
-                    <i class="bx bx-calendar me-1"></i> Tahun Ajaran {{ date('Y') }}/{{ date('Y') + 1 }}
+                    <i class="bx bx-calendar me-1"></i> Semester {{ $semester }} - {{ $tahun_ajaran }}
                 </span>
             </div>
         @endif
+    </div>
+
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-body">
+            <form action="{{ route('guru.jadwal_mengajar') }}" method="GET" class="row gx-3 gy-2 align-items-center">
+                <div class="col-md-4">
+                    <label class="form-label" for="tahun_ajaran">Tahun Ajaran</label>
+                    <select name="tahun_ajaran" id="tahun_ajaran" class="form-select">
+                        @foreach($tahun_ajaran_options as $ta)
+                            <option value="{{ $ta }}" {{ $tahun_ajaran == $ta ? 'selected' : '' }}>{{ $ta }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="semester">Semester</label>
+                    <select name="semester" id="semester" class="form-select">
+                        <option value="Ganjil" {{ $semester == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
+                        <option value="Genap" {{ $semester == 'Genap' ? 'selected' : '' }}>Genap</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label d-block">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary"><i class="bx bx-search me-1"></i> Tampilkan</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     @php
