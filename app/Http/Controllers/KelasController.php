@@ -10,19 +10,25 @@ class KelasController extends Controller
 {
     public function index(Request $request)
     {
-        $tahun_ajaran = $request->input('tahun_ajaran', date('Y') . '/' . (date('Y') + 1));
-        $semester = $request->input('semester', 'Ganjil');
+        $tahun_ajaran = $request->input('tahun_ajaran');
+        $semester = $request->input('semester');
 
-        $tahun_ajaran_options = [];
-        $currentYear = date('Y');
-        for ($i = -2; $i <= 2; $i++) {
-            $year = $currentYear + $i;
-            $tahun_ajaran_options[] = $year . '/' . ($year + 1);
+        // Jika tidak ada filter, ambil periode yang aktif
+        if (!$tahun_ajaran || !$semester) {
+            $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
+            if ($activePeriode) {
+                $tahun_ajaran = $activePeriode->tahun_ajaran;
+                $semester = $activePeriode->semester;
+            }
         }
 
-        $kelases = Kelas::with('wali_kelas')
-            ->where('tahun_ajaran', $tahun_ajaran)
-            ->where('semester', $semester)
+        $tahun_ajaran_options = \App\Models\PeriodeAkademik::select('tahun_ajaran')->distinct()->pluck('tahun_ajaran');
+        
+        $kelases = Kelas::with(['wali_kelas', 'periode'])
+            ->whereHas('periode', function($q) use ($tahun_ajaran, $semester) {
+                if ($tahun_ajaran) $q->where('tahun_ajaran', $tahun_ajaran);
+                if ($semester) $q->where('semester', $semester);
+            })
             ->latest()
             ->get();
             
@@ -33,15 +39,9 @@ class KelasController extends Controller
     {
         $assignedGuruIds = Kelas::whereNotNull('wali_kelas_id')->pluck('wali_kelas_id')->toArray();
         $gurus = Guru::whereNotIn('id', $assignedGuruIds)->get();
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
 
-        $tahun_ajaran_options = [];
-        $currentYear = date('Y');
-        for ($i = -2; $i <= 2; $i++) {
-            $year = $currentYear + $i;
-            $tahun_ajaran_options[] = $year . '/' . ($year + 1);
-        }
-
-        return view('admin.kelas.create', compact('gurus', 'tahun_ajaran_options'));
+        return view('admin.kelas.create', compact('gurus', 'periodes'));
     }
 
     public function store(Request $request)
@@ -53,26 +53,25 @@ class KelasController extends Controller
                 'max:100', 
                 function ($attribute, $value, $fail) use ($request) {
                     $exists = Kelas::where('nama_kelas', $value)
-                        ->where('tahun_ajaran', $request->tahun_ajaran)
-                        ->where('semester', $request->semester)
+                        ->where('periode_id', $request->periode_id)
                         ->exists();
                     if ($exists) {
-                        $fail('Nama kelas sudah ada untuk tahun ajaran dan semester ini.');
+                        $fail('Nama kelas sudah ada untuk periode ini.');
                     }
                 }
             ],
             'wali_kelas_id' => 'nullable|exists:guru,id|unique:kelas,wali_kelas_id',
-            'tahun_ajaran' => 'required|string',
-            'semester' => 'required|in:Ganjil,Genap',
+            'periode_id' => 'required|exists:periode_akademik,id',
         ], [
             'wali_kelas_id.unique' => 'Guru tersebut sudah menjadi wali di kelas lain.'
         ]);
 
-        Kelas::create($request->only('nama_kelas', 'wali_kelas_id', 'tahun_ajaran', 'semester'));
+        $kelas = Kelas::create($request->only('nama_kelas', 'wali_kelas_id', 'periode_id'));
+        $kelas->load('periode');
 
         return redirect()->route('admin.kelas.index', [
-            'tahun_ajaran' => $request->tahun_ajaran,
-            'semester' => $request->semester
+            'tahun_ajaran' => $kelas->periode->tahun_ajaran,
+            'semester' => $kelas->periode->semester
         ])->with('success', 'Data Kelas berhasil ditambahkan.');
     }
 
@@ -83,15 +82,9 @@ class KelasController extends Controller
                                 ->where('id', '!=', $kela->id)
                                 ->pluck('wali_kelas_id')->toArray();
         $gurus = Guru::whereNotIn('id', $assignedGuruIds)->get();
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
 
-        $tahun_ajaran_options = [];
-        $currentYear = date('Y');
-        for ($i = -2; $i <= 2; $i++) {
-            $year = $currentYear + $i;
-            $tahun_ajaran_options[] = $year . '/' . ($year + 1);
-        }
-
-        return view('admin.kelas.edit', compact('kelas', 'gurus', 'tahun_ajaran_options'));
+        return view('admin.kelas.edit', compact('kelas', 'gurus', 'periodes'));
     }
 
     public function update(Request $request, Kelas $kela)
@@ -103,27 +96,26 @@ class KelasController extends Controller
                 'max:100', 
                 function ($attribute, $value, $fail) use ($request, $kela) {
                     $exists = Kelas::where('nama_kelas', $value)
-                        ->where('tahun_ajaran', $request->tahun_ajaran)
-                        ->where('semester', $request->semester)
+                        ->where('periode_id', $request->periode_id)
                         ->where('id', '!=', $kela->id)
                         ->exists();
                     if ($exists) {
-                        $fail('Nama kelas sudah ada untuk tahun ajaran dan semester ini.');
+                        $fail('Nama kelas sudah ada untuk periode ini.');
                     }
                 }
             ],
             'wali_kelas_id' => 'nullable|exists:guru,id|unique:kelas,wali_kelas_id,' . $kela->id,
-            'tahun_ajaran' => 'required|string',
-            'semester' => 'required|in:Ganjil,Genap',
+            'periode_id' => 'required|exists:periode_akademik,id',
         ], [
             'wali_kelas_id.unique' => 'Guru tersebut sudah menjadi wali di kelas lain.'
         ]);
 
-        $kela->update($request->only('nama_kelas', 'wali_kelas_id', 'tahun_ajaran', 'semester'));
+        $kela->update($request->only('nama_kelas', 'wali_kelas_id', 'periode_id'));
+        $kela->load('periode');
 
         return redirect()->route('admin.kelas.index', [
-            'tahun_ajaran' => $request->tahun_ajaran,
-            'semester' => $request->semester
+            'tahun_ajaran' => $kela->periode->tahun_ajaran,
+            'semester' => $kela->periode->semester
         ])->with('success', 'Data Kelas berhasil diubah.');
     }
 

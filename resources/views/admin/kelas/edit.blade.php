@@ -37,28 +37,19 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label" for="tahun_ajaran">Tahun Ajaran</label>
-                                <select class="form-select @error('tahun_ajaran') is-invalid @enderror" id="tahun_ajaran" name="tahun_ajaran" required>
-                                    @foreach($tahun_ajaran_options as $option)
-                                        <option value="{{ $option }}" {{ old('tahun_ajaran', $kelas->tahun_ajaran) == $option ? 'selected' : '' }}>{{ $option }}</option>
-                                    @endforeach
-                                </select>
-                                @error('tahun_ajaran')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label" for="semester">Semester</label>
-                                <select class="form-select @error('semester') is-invalid @enderror" id="semester" name="semester" required>
-                                    <option value="Ganjil" {{ old('semester', $kelas->semester) == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
-                                    <option value="Genap" {{ old('semester', $kelas->semester) == 'Genap' ? 'selected' : '' }}>Genap</option>
-                                </select>
-                                @error('semester')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="periode_id">Periode Akademik</label>
+                            <select class="form-select @error('periode_id') is-invalid @enderror" id="periode_id" name="periode_id" required>
+                                <option value="">-- Pilih Periode --</option>
+                                @foreach($periodes as $p)
+                                    <option value="{{ $p->id }}" {{ old('periode_id', $kelas->periode_id) == $p->id ? 'selected' : '' }}>
+                                        {{ $p->tahun_ajaran }} - {{ $p->semester }} {{ $p->is_aktif ? '(Aktif)' : '' }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('periode_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <button type="submit" class="btn btn-primary"><i class="bx bx-save me-1"></i> Update Data</button>
