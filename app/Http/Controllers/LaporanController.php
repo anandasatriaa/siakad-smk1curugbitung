@@ -17,8 +17,15 @@ class LaporanController extends Controller
         $kelasList = Kelas::all();
         
         $kelas_id = $request->input('kelas_id');
-        $semester = $request->input('semester', 'Ganjil');
-        $tahun_ajaran = $request->input('tahun_ajaran', date('Y') . '/' . (date('Y') + 1));
+        $periode_id = $request->input('periode_id');
+
+        // Jika tidak ada filter periode, ambil yang aktif
+        if (!$periode_id) {
+            $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
+            $periode_id = $activePeriode ? $activePeriode->id : null;
+        }
+
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
         
         $siswas = [];
         $mapels = [];
@@ -32,16 +39,14 @@ class LaporanController extends Controller
 
             if ($mapels->isEmpty()) {
                 $mapelIdsFromNilai = Nilai::whereIn('siswa_id', $siswas->pluck('id'))
-                    ->where('semester', $semester)
-                    ->where('tahun_ajaran', $tahun_ajaran)
+                    ->where('periode_id', $periode_id)
                     ->pluck('mapel_id')
                     ->unique();
                 $mapels = MataPelajaran::whereIn('id', $mapelIdsFromNilai)->get();
             }
 
             $nilais = Nilai::whereIn('siswa_id', $siswas->pluck('id'))
-                ->where('semester', $semester)
-                ->where('tahun_ajaran', $tahun_ajaran)
+                ->where('periode_id', $periode_id)
                 ->get();
                 
             foreach ($nilais as $n) {
@@ -49,7 +54,7 @@ class LaporanController extends Controller
             }
         }
 
-        return view('laporan.nilai', compact('kelasList', 'kelas_id', 'semester', 'tahun_ajaran', 'siswas', 'mapels', 'nilaiData'));
+        return view('laporan.nilai', compact('kelasList', 'periodes', 'kelas_id', 'periode_id', 'siswas', 'mapels', 'nilaiData'));
     }
 
     public function absensi(Request $request)
