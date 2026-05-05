@@ -16,9 +16,20 @@
         <div class="card-body">
             <form action="{{ route('admin.laporan.absensi') }}" method="GET">
                 <div class="row gx-3 gy-2 align-items-end">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="periode_id">Periode Akademik</label>
+                        <select class="form-select" id="periode_id" name="periode_id" onchange="this.form.submit()" required>
+                            <option value="">-- Pilih Periode --</option>
+                            @foreach($periodes as $p)
+                                <option value="{{ $p->id }}" {{ $periode_id == $p->id ? 'selected' : '' }}>
+                                    {{ $p->tahun_ajaran }} - {{ $p->semester }} {{ $p->is_aktif ? '(Aktif)' : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label" for="kelas_id">Kelas</label>
-                        <select class="form-select" id="kelas_id" name="kelas_id" required>
+                        <select class="form-select" id="kelas_id" name="kelas_id" onchange="this.form.submit()" required>
                             <option value="">-- Pilih Kelas --</option>
                             @foreach($kelasList as $kelas)
                                 <option value="{{ $kelas->id }}" {{ $kelas_id == $kelas->id ? 'selected' : '' }}>
@@ -26,39 +37,6 @@
                                 </option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label" for="bulan">Bulan</label>
-                        <select class="form-select" id="bulan" name="bulan" required>
-                            @php
-                                $months = [
-                                    '01' => 'Januari', '02' => 'Februari', '03' => 'Maret',
-                                    '04' => 'April', '05' => 'Mei', '06' => 'Juni',
-                                    '07' => 'Juli', '08' => 'Agustus', '09' => 'September',
-                                    '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
-                                ];
-                            @endphp
-                            @foreach($months as $num => $name)
-                                <option value="{{ $num }}" {{ str_pad($bulan, 2, '0', STR_PAD_LEFT) == $num ? 'selected' : '' }}>
-                                    {{ $name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label" for="tahun">Tahun</label>
-                        <select class="form-select" id="tahun" name="tahun" required>
-                            @php
-                                $startYear = 2024;
-                                $endYear = max($startYear, (int)date('Y') + 5);
-                            @endphp
-                            @for($y = $startYear; $y <= $endYear; $y++)
-                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary w-100"><i class="bx bx-search me-1"></i> Tampilkan</button>
                     </div>
                 </div>
             </form>

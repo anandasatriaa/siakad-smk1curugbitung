@@ -62,18 +62,27 @@ class LaporanController extends Controller
         $kelasList = Kelas::all();
         
         $kelas_id = $request->input('kelas_id');
-        $bulan = $request->input('bulan', date('m'));
-        $tahun = $request->input('tahun', date('Y'));
+        $periode_id = $request->input('periode_id');
+
+        // Jika tidak ada filter periode, ambil yang aktif
+        $activePeriode = null;
+        if (!$periode_id) {
+            $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
+            $periode_id = $activePeriode ? $activePeriode->id : null;
+        } else {
+            $activePeriode = \App\Models\PeriodeAkademik::find($periode_id);
+        }
+
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
         
         $siswas = [];
         $absensiData = [];
 
-        if ($kelas_id) {
+        if ($kelas_id && $periode_id) {
             $siswas = Siswa::where('kelas_id', $kelas_id)->get();
             
             $absensis = Absensi::where('kelas_id', $kelas_id)
-                ->whereMonth('tanggal', $bulan)
-                ->whereYear('tanggal', $tahun)
+                ->where('periode_id', $periode_id)
                 ->get();
                 
             foreach ($absensis as $a) {
@@ -93,6 +102,6 @@ class LaporanController extends Controller
             }
         }
 
-        return view('laporan.absensi', compact('kelasList', 'kelas_id', 'bulan', 'tahun', 'siswas', 'absensiData'));
+        return view('laporan.absensi', compact('kelasList', 'periodes', 'activePeriode', 'kelas_id', 'periode_id', 'siswas', 'absensiData'));
     }
 }

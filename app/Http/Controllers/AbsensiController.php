@@ -35,15 +35,15 @@ class AbsensiController extends Controller
 
         // Get input parameters
         $tanggal = $request->input('tanggal', date('Y-m-d'));
-        $tahun_ajaran = $request->input('tahun_ajaran', date('Y') . '/' . (date('Y') + 1));
-        $semester = $request->input('semester', 'Ganjil');
+        $periode_id = $request->input('periode_id');
 
-        $tahun_ajaran_options = [];
-        $currentYear = date('Y');
-        for ($i = -2; $i <= 2; $i++) {
-            $year = $currentYear + $i;
-            $tahun_ajaran_options[] = $year . '/' . ($year + 1);
+        // Jika tidak ada filter periode, ambil yang aktif
+        if (!$periode_id) {
+            $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
+            $periode_id = $activePeriode ? $activePeriode->id : null;
         }
+
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
         
         // Determine allowed class
         $kelas_id = $request->input('kelas_id');
@@ -66,6 +66,7 @@ class AbsensiController extends Controller
             // Fetch existing attendance to pre-fill the form
             $absensi = Absensi::where('kelas_id', $kelas_id)
                 ->where('tanggal', $tanggal)
+                ->where('periode_id', $periode_id)
                 ->get();
             
             foreach ($absensi as $ab) {
@@ -74,7 +75,7 @@ class AbsensiController extends Controller
         }
 
         return view('absensi.index', compact(
-            'isSuperadmin', 'kelasList', 'kelas_id', 'tanggal', 'siswas', 'absensiExisting', 'tahun_ajaran', 'semester', 'tahun_ajaran_options'
+            'isSuperadmin', 'kelasList', 'kelas_id', 'tanggal', 'siswas', 'absensiExisting', 'periode_id', 'periodes'
         ));
     }
 
@@ -94,8 +95,7 @@ class AbsensiController extends Controller
         $request->validate([
             'kelas_id' => 'required|exists:kelas,id',
             'tanggal' => 'required|date|before_or_equal:today',
-            'tahun_ajaran' => 'required|string',
-            'semester' => 'required|in:Ganjil,Genap',
+            'periode_id' => 'required|exists:periode_akademik,id',
             'absensi' => 'required|array',
             'absensi.*.status' => 'required|in:hadir,sakit,izin,alpa',
             'absensi.*.keterangan' => 'nullable|string|max:255',
@@ -122,12 +122,11 @@ class AbsensiController extends Controller
                     'kelas_id' => $request->kelas_id,
                     'siswa_id' => $siswa_id,
                     'tanggal' => $request->tanggal,
+                    'periode_id' => $request->periode_id,
                 ],
                 [
                     'status' => $data['status'],
                     'keterangan' => $data['keterangan'] ?? null,
-                    'tahun_ajaran' => $request->tahun_ajaran,
-                    'semester' => $request->semester,
                 ]
             );
         }
@@ -135,8 +134,7 @@ class AbsensiController extends Controller
         return redirect()->route('siswa.absensi.index', [
             'kelas_id' => $request->kelas_id, 
             'tanggal' => $request->tanggal,
-            'tahun_ajaran' => $request->tahun_ajaran,
-            'semester' => $request->semester
+            'periode_id' => $request->periode_id,
         ])->with('success', 'Data absensi berhasil disimpan.');
     }
 

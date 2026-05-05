@@ -25,7 +25,7 @@
                 <div class="row gx-3 gy-2 align-items-center">
                     <div class="col-md-3">
                         <label class="form-label" for="kelas_id">Kelas</label>
-                        <select class="form-select" id="kelas_id" name="kelas_id" {{ !$isSuperadmin ? 'readonly' : '' }}>
+                        <select class="form-select" id="kelas_id" name="kelas_id" {{ !$isSuperadmin ? 'readonly' : '' }} onchange="this.form.submit()">
                             @if($isSuperadmin)
                                 <option value="">-- Pilih Kelas --</option>
                             @endif
@@ -38,25 +38,18 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="tanggal">Tanggal</label>
-                        <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{ $tanggal }}" max="{{ date('Y-m-d') }}" required>
+                        <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{ $tanggal }}" max="{{ date('Y-m-d') }}" onchange="this.form.submit()" required>
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label" for="tahun_ajaran">Tahun Ajaran</label>
-                        <select class="form-select" id="tahun_ajaran" name="tahun_ajaran" required>
-                            @foreach($tahun_ajaran_options as $ta)
-                                <option value="{{ $ta }}" {{ $tahun_ajaran == $ta ? 'selected' : '' }}>{{ $ta }}</option>
+                    <div class="col-md-6">
+                        <label class="form-label" for="periode_id">Periode Akademik</label>
+                        <select class="form-select" id="periode_id" name="periode_id" onchange="this.form.submit()" required>
+                            <option value="">-- Pilih Periode --</option>
+                            @foreach($periodes as $p)
+                                <option value="{{ $p->id }}" {{ $periode_id == $p->id ? 'selected' : '' }}>
+                                    {{ $p->tahun_ajaran }} - {{ $p->semester }} {{ $p->is_aktif ? '(Aktif)' : '' }}
+                                </option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label" for="semester">Semester</label>
-                        <select class="form-select" id="semester" name="semester" required>
-                            <option value="Ganjil" {{ $semester == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
-                            <option value="Genap" {{ $semester == 'Genap' ? 'selected' : '' }}>Genap</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2 mt-4">
-                        <button type="submit" class="btn btn-primary w-100"><i class="bx bx-search me-1"></i> Cari</button>
                     </div>
                 </div>
             </form>
@@ -74,8 +67,7 @@
                     @csrf
                     <input type="hidden" name="kelas_id" value="{{ $kelas_id }}">
                     <input type="hidden" name="tanggal" value="{{ $tanggal }}">
-                    <input type="hidden" name="tahun_ajaran" value="{{ $tahun_ajaran }}">
-                    <input type="hidden" name="semester" value="{{ $semester }}">
+                    <input type="hidden" name="periode_id" value="{{ $periode_id }}">
                     
                     <div class="table-responsive text-nowrap mb-3">
                         <table class="table table-bordered">
