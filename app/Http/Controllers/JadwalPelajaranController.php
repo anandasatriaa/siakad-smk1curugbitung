@@ -12,19 +12,25 @@ class JadwalPelajaranController extends Controller
 {
     public function index(Request $request)
     {
-        $semester = $request->input('semester', 'Ganjil');
-        $tahun_ajaran = $request->input('tahun_ajaran', date('Y') . '/' . (date('Y') + 1));
+        $tahun_ajaran = $request->input('tahun_ajaran');
+        $semester = $request->input('semester');
 
-        $tahun_ajaran_options = [];
-        $currentYear = date('Y');
-        for ($i = -2; $i <= 2; $i++) {
-            $year = $currentYear + $i;
-            $tahun_ajaran_options[] = $year . '/' . ($year + 1);
+        // Jika tidak ada filter, ambil periode yang aktif
+        if (!$tahun_ajaran || !$semester) {
+            $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
+            if ($activePeriode) {
+                $tahun_ajaran = $activePeriode->tahun_ajaran;
+                $semester = $activePeriode->semester;
+            }
         }
 
-        $jadwals = JadwalPelajaran::with(['kelas', 'mata_pelajaran', 'guru'])
-            ->where('semester', $semester)
-            ->where('tahun_ajaran', $tahun_ajaran)
+        $tahun_ajaran_options = \App\Models\PeriodeAkademik::select('tahun_ajaran')->distinct()->pluck('tahun_ajaran');
+
+        $jadwals = JadwalPelajaran::with(['kelas.periode', 'mata_pelajaran', 'guru'])
+            ->whereHas('kelas.periode', function($q) use ($tahun_ajaran, $semester) {
+                if ($tahun_ajaran) $q->where('tahun_ajaran', $tahun_ajaran);
+                if ($semester) $q->where('semester', $semester);
+            })
             ->join('kelas', 'jadwal_pelajaran.kelas_id', '=', 'kelas.id')
             ->select('jadwal_pelajaran.*')
             ->orderBy('kelas.nama_kelas')
@@ -38,22 +44,26 @@ class JadwalPelajaranController extends Controller
         return view('admin.jadwal.index', compact('jadwals', 'semester', 'tahun_ajaran', 'tahun_ajaran_options'));
     } 
 
-    public function create()
+    public function create(Request $request)
     {
-        $kelases = Kelas::all();
-        $mapels = MataPelajaran::all();
-        $gurus = Guru::all();
+        $tahun_ajaran = $request->query('tahun_ajaran');
+        $semester = $request->query('semester');
 
-        $hari_options = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        
-        $tahun_ajaran_options = [];
-        $currentYear = date('Y');
-        for ($i = -2; $i <= 2; $i++) {
-            $year = $currentYear + $i;
-            $tahun_ajaran_options[] = $year . '/' . ($year + 1);
+        // Ambil kelas yang sesuai dengan periode yang dipilih atau aktif
+        $kelases = Kelas::whereHas('periode', function($q) use ($tahun_ajaran, $semester) {
+            if ($tahun_ajaran) $q->where('tahun_ajaran', $tahun_ajaran);
+            if ($semester) $q->where('semester', $semester);
+        })->get();
+
+        if ($kelases->isEmpty()) {
+            $kelases = Kelas::all(); // Fallback jika tidak ada filter
         }
 
-        return view('admin.jadwal.create', compact('kelases', 'mapels', 'gurus', 'hari_options', 'tahun_ajaran_options'));
+        $mapels = MataPelajaran::all();
+        $gurus = Guru::all();
+        $hari_options = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        
+        return view('admin.jadwal.create', compact('kelases', 'mapels', 'gurus', 'hari_options'));
     }
 
     public function store(Request $request)
@@ -61,8 +71,6 @@ class JadwalPelajaranController extends Controller
         $request->validate([
             'kelas_id' => 'required|exists:kelas,id',
             'hari' => 'required|string',
-            'tahun_ajaran' => 'required|string',
-            'semester' => 'required|in:Ganjil,Genap',
             'mapel_id' => 'required|array',
             'mapel_id.*' => 'required|exists:mata_pelajaran,id',
             'guru_id' => 'required|array',
@@ -77,8 +85,6 @@ class JadwalPelajaranController extends Controller
             JadwalPelajaran::create([
                 'kelas_id' => $request->kelas_id,
                 'hari' => $request->hari,
-                'tahun_ajaran' => $request->tahun_ajaran,
-                'semester' => $request->semester,
                 'mapel_id' => $mapel_id,
                 'guru_id' => $request->guru_id[$key],
                 'jam_mulai' => $request->jam_mulai[$key],
@@ -97,21 +103,12 @@ class JadwalPelajaranController extends Controller
 
         $hari_options = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-        $tahun_ajaran_options = [];
-        $currentYear = date('Y');
-        for ($i = -2; $i <= 2; $i++) {
-            $year = $currentYear + $i;
-            $tahun_ajaran_options[] = $year . '/' . ($year + 1);
-        }
-
         $jadwals = JadwalPelajaran::where('kelas_id', $jadwal->kelas_id)
             ->where('hari', $jadwal->hari)
-            ->where('tahun_ajaran', $jadwal->tahun_ajaran)
-            ->where('semester', $jadwal->semester)
             ->orderBy('jam_mulai')
             ->get();
 
-        return view('admin.jadwal.edit', compact('jadwal', 'jadwals', 'kelases', 'mapels', 'gurus', 'hari_options', 'tahun_ajaran_options'));
+        return view('admin.jadwal.edit', compact('jadwal', 'jadwals', 'kelases', 'mapels', 'gurus', 'hari_options'));
     }
 
     public function update(Request $request, JadwalPelajaran $jadwal)
@@ -119,8 +116,6 @@ class JadwalPelajaranController extends Controller
         $request->validate([
             'kelas_id' => 'required|exists:kelas,id',
             'hari' => 'required|string',
-            'tahun_ajaran' => 'required|string',
-            'semester' => 'required|in:Ganjil,Genap',
             'mapel_id' => 'required|array',
             'mapel_id.*' => 'required|exists:mata_pelajaran,id',
             'guru_id' => 'required|array',
@@ -133,21 +128,15 @@ class JadwalPelajaranController extends Controller
 
         $old_kelas_id = $jadwal->kelas_id;
         $old_hari = $jadwal->hari;
-        $old_tahun = $jadwal->tahun_ajaran;
-        $old_semester = $jadwal->semester;
 
         JadwalPelajaran::where('kelas_id', $old_kelas_id)
             ->where('hari', $old_hari)
-            ->where('tahun_ajaran', $old_tahun)
-            ->where('semester', $old_semester)
             ->delete();
 
         foreach ($request->mapel_id as $key => $mapel_id) {
             JadwalPelajaran::create([
                 'kelas_id' => $request->kelas_id,
                 'hari' => $request->hari,
-                'tahun_ajaran' => $request->tahun_ajaran,
-                'semester' => $request->semester,
                 'mapel_id' => $mapel_id,
                 'guru_id' => $request->guru_id[$key],
                 'jam_mulai' => $request->jam_mulai[$key],

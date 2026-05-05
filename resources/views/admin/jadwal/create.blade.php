@@ -48,31 +48,6 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="tahun_ajaran">Tahun Ajaran</label>
-                                    <select class="form-select @error('tahun_ajaran') is-invalid @enderror" id="tahun_ajaran" name="tahun_ajaran" required>
-                                        <option value="">-- Pilih Tahun Ajaran --</option>
-                                        @foreach($tahun_ajaran_options as $ta)
-                                            <option value="{{ $ta }}" {{ old('tahun_ajaran') == $ta ? 'selected' : '' }}>{{ $ta }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('tahun_ajaran')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="semester">Semester</label>
-                                    <select class="form-select @error('semester') is-invalid @enderror" id="semester" name="semester" required>
-                                        <option value="">-- Pilih Semester --</option>
-                                        <option value="Ganjil" {{ old('semester') == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
-                                        <option value="Genap" {{ old('semester') == 'Genap' ? 'selected' : '' }}>Genap</option>
-                                    </select>
-                                    @error('semester')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
 
                             <hr>
                             <h6>Daftar Mata Pelajaran</h6>
