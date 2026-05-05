@@ -13,6 +13,7 @@ use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\GuruFeatureController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PeriodeAkademikController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -59,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('kelas', KelasController::class);
         Route::resource('mapel', MataPelajaranController::class);
         Route::resource('jadwal', JadwalPelajaranController::class);
+        Route::resource('periode', PeriodeAkademikController::class);
 
         // Laporan
         Route::get('laporan/nilai', [LaporanController::class, 'nilai'])->name('laporan.nilai');

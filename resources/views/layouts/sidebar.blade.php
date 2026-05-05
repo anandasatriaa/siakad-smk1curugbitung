@@ -65,6 +65,12 @@
                                 <div data-i18n="Jadwal Pelajaran">Jadwal Pelajaran</div>
                             </a>
                         </li>
+                        <li class="menu-item {{ Route::is('admin.periode.*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.periode.index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-time-five"></i>
+                                <div data-i18n="Periode Akademik">Periode Akademik</div>
+                            </a>
+                        </li>
                         <li class="menu-header small text-uppercase">
                             <span class="menu-header-text">Akademik & Laporan</span>
                         </li>
