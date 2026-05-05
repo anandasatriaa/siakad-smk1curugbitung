@@ -92,12 +92,28 @@ class GuruFeatureController extends Controller
 
     public function riwayatAbsensi(Request $request)
     {
+        $periode_id = $request->input('periode_id');
+
+        // Jika tidak ada filter periode, ambil yang aktif
+        if (!$periode_id) {
+            $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();
+            $periode_id = $activePeriode ? $activePeriode->id : null;
+        }
+
+        $periodes = \App\Models\PeriodeAkademik::orderBy('tahun_ajaran', 'desc')->get();
+
         $user = Auth::user();
         if ($user->role === 'superadmin') {
-            $kelasList = Kelas::all();
+            $kelasList = Kelas::where('periode_id', $periode_id)->get();
         } else {
             $guru = $this->getGuru();
-            $kelasIds = JadwalPelajaran::where('guru_id', $guru->id)->pluck('kelas_id')->unique();
+            // Ambil kelas yang diajar guru pada periode tertentu
+            $kelasIds = JadwalPelajaran::where('guru_id', $guru->id)
+                ->whereHas('kelas', function($q) use ($periode_id) {
+                    $q->where('periode_id', $periode_id);
+                })
+                ->pluck('kelas_id')
+                ->unique();
             $kelasList = Kelas::whereIn('id', $kelasIds)->get();
         }
 
@@ -110,12 +126,13 @@ class GuruFeatureController extends Controller
         if ($kelas_id) {
             $absensis = Absensi::with('siswa')
                 ->where('kelas_id', $kelas_id)
+                ->where('periode_id', $periode_id)
                 ->whereBetween('tanggal', [$tanggal_awal, $tanggal_akhir])
                 ->orderBy('tanggal', 'desc')
                 ->get();
         }
 
-        return view('guru.riwayat_absensi', compact('kelasList', 'kelas_id', 'tanggal_awal', 'tanggal_akhir', 'absensis'));
+        return view('guru.riwayat_absensi', compact('kelasList', 'periodes', 'periode_id', 'kelas_id', 'tanggal_awal', 'tanggal_akhir', 'absensis'));
     }
 
     public function exportLaporan(Request $request)

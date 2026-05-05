@@ -16,8 +16,19 @@
             <form action="{{ route('guru.absensi.riwayat') }}" method="GET">
                 <div class="row gx-3 gy-2 align-items-end">
                     <div class="col-md-3">
+                        <label class="form-label" for="periode_id">Periode Akademik</label>
+                        <select class="form-select" id="periode_id" name="periode_id" onchange="this.form.submit()" required>
+                            <option value="">-- Pilih Periode --</option>
+                            @foreach($periodes as $p)
+                                <option value="{{ $p->id }}" {{ $periode_id == $p->id ? 'selected' : '' }}>
+                                    {{ $p->tahun_ajaran }} - {{ $p->semester }} {{ $p->is_aktif ? '(Aktif)' : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
                         <label class="form-label" for="kelas_id">Kelas</label>
-                        <select class="form-select" id="kelas_id" name="kelas_id" required>
+                        <select class="form-select" id="kelas_id" name="kelas_id" onchange="this.form.submit()" required>
                             <option value="">-- Pilih Kelas --</option>
                             @foreach($kelasList as $kelas)
                                 <option value="{{ $kelas->id }}" {{ $kelas_id == $kelas->id ? 'selected' : '' }}>
@@ -28,14 +39,11 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="tanggal_awal">Dari Tanggal</label>
-                        <input type="date" class="form-control" id="tanggal_awal" name="tanggal_awal" value="{{ $tanggal_awal }}" required>
+                        <input type="date" class="form-control" id="tanggal_awal" name="tanggal_awal" value="{{ $tanggal_awal }}" onchange="this.form.submit()" required>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="tanggal_akhir">Sampai Tanggal</label>
-                        <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir" value="{{ $tanggal_akhir }}" required>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary w-100"><i class="bx bx-search me-1"></i> Tampilkan</button>
+                        <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir" value="{{ $tanggal_akhir }}" onchange="this.form.submit()" required>
                     </div>
                 </div>
             </form>
