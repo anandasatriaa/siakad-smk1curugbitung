@@ -64,6 +64,128 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets/') }}/js/config.js"></script>
+
+    <style>
+      /* Custom Green Theme Overrides */
+      .text-primary {
+        color: #198754 !important;
+      }
+
+      .bg-primary {
+        background-color: #198754 !important;
+      }
+
+      .btn-primary {
+        background-color: #198754 !important;
+        border-color: #198754 !important;
+        box-shadow: 0 0.125rem 0.25rem 0 rgba(25, 135, 84, 0.4) !important;
+      }
+
+      .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+        background-color: #157347 !important;
+        border-color: #146c43 !important;
+      }
+
+      .bg-label-primary {
+        background-color: #e8f5e9 !important;
+        color: #198754 !important;
+      }
+
+      .btn-outline-primary {
+        color: #198754 !important;
+        border-color: #198754 !important;
+      }
+
+      .btn-outline-primary:hover {
+        background-color: #198754 !important;
+        border-color: #198754 !important;
+        color: #fff !important;
+      }
+
+      .bg-menu-theme .menu-inner > .menu-item.active > .menu-link {
+        color: #198754 !important;
+        background-color: rgba(25, 135, 84, 0.16) !important;
+      }
+
+      .bg-menu-theme .menu-inner > .menu-item.active:before {
+        background: #198754 !important;
+      }
+      
+      .bg-menu-theme .menu-sub > .menu-item.active > .menu-link:not(.menu-toggle):before {
+        background-color: #198754 !important;
+        border: 3px solid #e8f5e9 !important;
+      }
+
+      .app-brand .layout-menu-toggle {
+        background-color: #198754 !important;
+      }
+
+      .form-control:focus, .form-select:focus {
+        border-color: #198754 !important;
+      }
+
+      .page-item.active .page-link {
+        background-color: #198754 !important;
+        border-color: #198754 !important;
+      }
+
+      /* Premium Green Background & Styling */
+      body {
+        background-color: #f0f7f0 !important; /* Soft mint green canvas */
+      }
+
+      .content-wrapper {
+        background-color: transparent !important;
+      }
+
+      .card {
+        border: none !important;
+        border-top: 4px solid #198754 !important; /* Green Accent on Top */
+        border-radius: 12px !important;
+        box-shadow: 0 4px 15px rgba(25, 135, 84, 0.05) !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        overflow: hidden; /* Ensure content stays within rounded corners with border-top */
+      }
+
+      .card-header {
+        background-color: rgba(25, 135, 84, 0.03) !important;
+        padding: 1.25rem !important;
+      }
+
+      .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(25, 135, 84, 0.12) !important;
+      }
+
+      .layout-navbar {
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(8px);
+      }
+
+      .bg-menu-theme {
+        background-color: #ffffff !important;
+        border-right: 1px solid rgba(25, 135, 84, 0.1);
+      }
+
+      .bg-footer-theme {
+        background-color: transparent !important;
+      }
+
+      /* Scrollbar Customization */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f0f7f0;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #198754;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #157347;
+      }
+    </style>
   </head>
 
   <body>
@@ -146,7 +268,28 @@
         $(document).ready(function() {
             $('.datatable').DataTable({
                 "language": {
-                    "url": "//cdn.datatables.net/plug-ins/2.3.8/i18n/id.json"
+                    "decimal": "",
+                    "emptyTable": "Tidak ada data yang tersedia pada tabel ini",
+                    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                    "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+                    "infoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Tampilkan _MENU_ entri",
+                    "loadingRecords": "Sedang memproses...",
+                    "processing": "Sedang memproses...",
+                    "search": "Cari:",
+                    "zeroRecords": "Tidak ditemukan data yang sesuai",
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    },
+                    "aria": {
+                        "sortAscending": ": aktifkan untuk mengurutkan kolom ke atas",
+                        "sortDescending": ": aktifkan untuk mengurutkan kolom ke bawah"
+                    }
                 }
             });
         });
