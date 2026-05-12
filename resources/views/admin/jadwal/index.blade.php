@@ -101,22 +101,19 @@
                                                         </div>
                                                     </td>
                                                     <td class="text-center">
-                                                        <div class="dropdown">
-                                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="{{ route('admin.jadwal.edit', $jadwal->id) }}">
-                                                                    <i class="bx bx-edit-alt me-1"></i> Edit
-                                                                </a>
-                                                                <form action="{{ route('admin.jadwal.destroy', $jadwal->id) }}" method="POST" class="form-delete">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="button" class="dropdown-item btn-delete">
-                                                                        <i class="bx bx-trash me-1"></i> Hapus
-                                                                    </button>
-                                                                </form>
-                                                            </div>
+                                                        <div class="d-flex justify-content-center gap-2">
+                                                            <a href="{{ route('admin.jadwal.edit', $jadwal->id) }}"
+                                                                class="btn btn-sm btn-warning">
+                                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                                            </a>
+                                                            <form action="{{ route('admin.jadwal.destroy', $jadwal->id) }}" method="POST"
+                                                                class="d-inline form-delete">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button" class="btn btn-sm btn-danger btn-delete">
+                                                                    <i class="bx bx-trash me-1"></i> Hapus
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </td>
                                                 </tr>
