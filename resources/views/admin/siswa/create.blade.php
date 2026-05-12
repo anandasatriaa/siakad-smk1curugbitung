@@ -32,6 +32,17 @@
                             @enderror
                         </div>
                         <div class="mb-3">
+                            <label class="form-label" for="jenis_kelamin">Jenis Kelamin</label>
+                            <select class="form-select @error('jenis_kelamin') is-invalid @enderror" id="jenis_kelamin" name="jenis_kelamin" required>
+                                <option value="">-- Pilih Jenis Kelamin --</option>
+                                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki (L)</option>
+                                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan (P)</option>
+                            </select>
+                            @error('jenis_kelamin')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label" for="kelas_id">Kelas</label>
                             <select class="form-select @error('kelas_id') is-invalid @enderror" id="kelas_id" name="kelas_id" required>
                                 <option value="">-- Pilih Kelas --</option>
@@ -47,7 +58,7 @@
                             <label class="form-label" for="jabatan">Jabatan Kelas</label>
                             <select class="form-select @error('jabatan') is-invalid @enderror" id="jabatan" name="jabatan">
                                 <option value="">Siswa</option>
-                                <option value="ketua_kelas" {{ old('jabatan') == 'ketua_kelas' ? 'selected' : '' }}>Ketua Kelas</option>
+                                <option value="ketua kelas" {{ old('jabatan') == 'ketua kelas' ? 'selected' : '' }}>Ketua Kelas</option>
                                 <option value="sekretaris" {{ old('jabatan') == 'sekretaris' ? 'selected' : '' }}>Sekretaris</option>
                                 <option value="bendahara" {{ old('jabatan') == 'bendahara' ? 'selected' : '' }}>Bendahara</option>
                             </select>

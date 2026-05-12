@@ -87,6 +87,7 @@ class DatabaseSeeder extends Seeder
             'user_id' => $siswaUser->id,
             'nis' => '202410001',
             'nama_siswa' => 'Ahmad Reza',
+            'jenis_kelamin' => 'L',
             'kelas_id' => $kelas10RPL->id,
             'jabatan' => 'sekretaris', // Bisa input absensi
         ]);
@@ -95,6 +96,7 @@ class DatabaseSeeder extends Seeder
             'user_id' => null,
             'nis' => '202410002',
             'nama_siswa' => 'Dina Mariana',
+            'jenis_kelamin' => 'P',
             'kelas_id' => $kelas10RPL->id,
             'jabatan' => null,
         ]);

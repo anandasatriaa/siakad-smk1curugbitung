@@ -27,6 +27,7 @@
                             <th>Foto</th>
                             <th>NIS</th>
                             <th>Nama Siswa</th>
+                            <th>Jenis Kelamin</th>
                             <th>Kelas</th>
                             <th>Jabatan</th>
                             <th>Akun Login</th>
@@ -46,6 +47,7 @@
                                 </td>
                                 <td>{{ $siswa->nis }}</td>
                                 <td><strong>{{ $siswa->nama_siswa }}</strong></td>
+                                <td>{{ $siswa->jenis_kelamin }}</td>
                                 <td>{{ $siswa->kelas->nama_kelas ?? '-' }}</td>
                                 <td>{{ $siswa->jabatan ? ucfirst($siswa->jabatan) : 'Siswa' }}</td>
                                 <td>
