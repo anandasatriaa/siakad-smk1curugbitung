@@ -15,7 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->string('nip')->nullable()->unique();
+            $table->string('nuptk')->nullable()->unique();
+            $table->string('nik')->nullable()->unique();
             $table->string('nama_guru');
+            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->string('agama')->nullable();
+            $table->string('status_kepegawaian')->nullable();
+            $table->string('jenis_ptk')->nullable();
             $table->string('no_telp')->nullable();
             $table->string('foto')->nullable();
             $table->timestamps();

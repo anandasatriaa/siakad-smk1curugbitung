@@ -24,8 +24,16 @@ class GuruController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip' => 'required|string|max:50|unique:guru',
+            'nip' => 'nullable|string|max:50|unique:guru',
+            'nuptk' => 'nullable|string|max:50|unique:guru',
+            'nik' => 'nullable|string|max:20|unique:guru',
             'nama_guru' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|in:L,P',
+            'tempat_lahir' => 'nullable|string|max:100',
+            'tanggal_lahir' => 'nullable|date',
+            'agama' => 'nullable|string|max:50',
+            'status_kepegawaian' => 'nullable|string|max:100',
+            'jenis_ptk' => 'nullable|string|max:100',
             'no_telp' => 'nullable|string|max:20',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
@@ -44,7 +52,15 @@ class GuruController extends Controller
         $data = [
             'user_id' => $user->id,
             'nip' => $request->nip,
+            'nuptk' => $request->nuptk,
+            'nik' => $request->nik,
             'nama_guru' => $request->nama_guru,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'agama' => $request->agama,
+            'status_kepegawaian' => $request->status_kepegawaian,
+            'jenis_ptk' => $request->jenis_ptk,
             'no_telp' => $request->no_telp,
         ];
 
@@ -65,13 +81,21 @@ class GuruController extends Controller
     public function update(Request $request, Guru $guru)
     {
         $request->validate([
-            'nip' => 'required|string|max:50|unique:guru,nip,' . $guru->id,
+            'nip' => 'nullable|string|max:50|unique:guru,nip,' . $guru->id,
+            'nuptk' => 'nullable|string|max:50|unique:guru,nuptk,' . $guru->id,
+            'nik' => 'nullable|string|max:20|unique:guru,nik,' . $guru->id,
             'nama_guru' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|in:L,P',
+            'tempat_lahir' => 'nullable|string|max:100',
+            'tanggal_lahir' => 'nullable|date',
+            'agama' => 'nullable|string|max:50',
+            'status_kepegawaian' => 'nullable|string|max:100',
+            'jenis_ptk' => 'nullable|string|max:100',
             'no_telp' => 'nullable|string|max:20',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $data = $request->only('nip', 'nama_guru', 'no_telp');
+        $data = $request->only('nip', 'nuptk', 'nik', 'nama_guru', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'status_kepegawaian', 'jenis_ptk', 'no_telp');
 
         if ($request->hasFile('foto')) {
             if ($guru->foto) {

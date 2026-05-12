@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
-#[Fillable(['user_id', 'nip', 'nama_guru', 'no_telp', 'foto'])]
+#[Fillable(['user_id', 'nip', 'nuptk', 'nik', 'nama_guru', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'status_kepegawaian', 'jenis_ptk', 'no_telp', 'foto'])]
 class Guru extends Model
 {
     use HasFactory;

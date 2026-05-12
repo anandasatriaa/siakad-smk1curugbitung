@@ -25,8 +25,10 @@
                         <tr>
                             <th>#</th>
                             <th>Foto</th>
-                            <th>NIP</th>
+                            <th>NIP / NUPTK</th>
                             <th>Nama Guru</th>
+                            <th>L/P</th>
+                            <th>Jenis PTK</th>
                             <th>No Telp</th>
                             <th>Akun Login</th>
                             <th>Aksi</th>
@@ -43,8 +45,13 @@
                                         <img src="{{ asset('assets/img/avatars/user-default.png') }}" alt="Default" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
                                     @endif
                                 </td>
-                                <td>{{ $guru->nip }}</td>
+                                <td>
+                                    <div>{{ $guru->nip ?? '-' }}</div>
+                                    <small class="text-muted">{{ $guru->nuptk ?? '-' }}</small>
+                                </td>
                                 <td><strong>{{ $guru->nama_guru }}</strong></td>
+                                <td>{{ $guru->jenis_kelamin }}</td>
+                                <td><span class="badge bg-label-primary">{{ $guru->jenis_ptk ?? '-' }}</span></td>
                                 <td>{{ $guru->no_telp ?? '-' }}</td>
                                 <td>
                                     @if ($guru->user)

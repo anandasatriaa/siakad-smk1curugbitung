@@ -9,7 +9,7 @@
     </h4>
 
     <div class="row">
-        <div class="col-xl-6">
+        <div class="col-xl-9">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Form Edit Guru</h5>
@@ -18,26 +18,143 @@
                     <form action="{{ route('admin.guru.update', $guru->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="mb-3">
-                            <label class="form-label" for="nip">NIP</label>
-                            <input type="text" class="form-control @error('nip') is-invalid @enderror" id="nip" name="nip" value="{{ old('nip', $guru->nip) }}" required />
-                            @error('nip')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="nama_guru">Nama Lengkap & Gelar</label>
+                                    <input type="text" class="form-control @error('nama_guru') is-invalid @enderror" id="nama_guru" name="nama_guru" value="{{ old('nama_guru', $guru->nama_guru) }}" required />
+                                    @error('nama_guru')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="jenis_kelamin">Jenis Kelamin</label>
+                                    <select class="form-select @error('jenis_kelamin') is-invalid @enderror" id="jenis_kelamin" name="jenis_kelamin" required>
+                                        <option value="">-- Pilih Jenis Kelamin --</option>
+                                        <option value="L" {{ old('jenis_kelamin', $guru->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki (L)</option>
+                                        <option value="P" {{ old('jenis_kelamin', $guru->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan (P)</option>
+                                    </select>
+                                    @error('jenis_kelamin')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="nama_guru">Nama Lengkap & Gelar</label>
-                            <input type="text" class="form-control @error('nama_guru') is-invalid @enderror" id="nama_guru" name="nama_guru" value="{{ old('nama_guru', $guru->nama_guru) }}" required />
-                            @error('nama_guru')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label" for="nip">NIP</label>
+                                    <input type="text" class="form-control @error('nip') is-invalid @enderror" id="nip" name="nip" value="{{ old('nip', $guru->nip) }}" />
+                                    @error('nip')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label" for="nuptk">NUPTK</label>
+                                    <input type="text" class="form-control @error('nuptk') is-invalid @enderror" id="nuptk" name="nuptk" value="{{ old('nuptk', $guru->nuptk) }}" />
+                                    @error('nuptk')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label" for="nik">NIK</label>
+                                    <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik" value="{{ old('nik', $guru->nik) }}" />
+                                    @error('nik')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="no_telp">No. Telepon / HP</label>
-                            <input type="text" class="form-control @error('no_telp') is-invalid @enderror" id="no_telp" name="no_telp" value="{{ old('no_telp', $guru->no_telp) }}" />
-                            @error('no_telp')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="tempat_lahir">Tempat Lahir</label>
+                                    <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir', $guru->tempat_lahir) }}" />
+                                    @error('tempat_lahir')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="tanggal_lahir">Tanggal Lahir</label>
+                                    <input type="date" class="form-control @error('tanggal_lahir') is-invalid @enderror" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $guru->tanggal_lahir) }}" />
+                                    @error('tanggal_lahir')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="agama">Agama</label>
+                                    <select class="form-select @error('agama') is-invalid @enderror" id="agama" name="agama">
+                                        <option value="">-- Pilih Agama --</option>
+                                        <option value="Islam" {{ old('agama', $guru->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                        <option value="Kristen" {{ old('agama', $guru->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                                        <option value="Katolik" {{ old('agama', $guru->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                        <option value="Hindu" {{ old('agama', $guru->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                        <option value="Budha" {{ old('agama', $guru->agama) == 'Budha' ? 'selected' : '' }}>Budha</option>
+                                        <option value="Konghucu" {{ old('agama', $guru->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                                    </select>
+                                    @error('agama')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="no_telp">No. Telepon / HP</label>
+                                    <input type="text" class="form-control @error('no_telp') is-invalid @enderror" id="no_telp" name="no_telp" value="{{ old('no_telp', $guru->no_telp) }}" />
+                                    @error('no_telp')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="status_kepegawaian">Status Kepegawaian</label>
+                                    <input class="form-control @error('status_kepegawaian') is-invalid @enderror" list="statusList" id="status_kepegawaian" name="status_kepegawaian" value="{{ old('status_kepegawaian', $guru->status_kepegawaian) }}" placeholder="Pilih atau ketik">
+                                    <datalist id="statusList">
+                                        <option value="PNS">
+                                        <option value="PPPK">
+                                        <option value="PPPK Paruh Waktu">
+                                        <option value="Honor Daerah TK.I Provinsi">
+                                    </datalist>
+                                    @error('status_kepegawaian')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="jenis_ptk">Jenis PTK</label>
+                                    <input class="form-control @error('jenis_ptk') is-invalid @enderror" list="ptkList" id="jenis_ptk" name="jenis_ptk" value="{{ old('jenis_ptk', $guru->jenis_ptk) }}" placeholder="Pilih atau ketik">
+                                    <datalist id="ptkList">
+                                        <option value="Guru">
+                                        <option value="Kepala Sekolah">
+                                        <option value="Tenaga Kependidikan">
+                                        <option value="Pramubakti">
+                                        <option value="Satpam">
+                                    </datalist>
+                                    @error('jenis_ptk')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="foto">Foto Profil (Kosongkan jika tidak ingin mengubah)</label>

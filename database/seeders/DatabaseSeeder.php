@@ -58,14 +58,30 @@ class DatabaseSeeder extends Seeder
         $guru = Guru::create([
             'user_id' => $guruUser->id,
             'nip' => '198001012005011002',
+            'nuptk' => '1234567890123456',
+            'nik' => '3201010101010001',
             'nama_guru' => 'Budi Santoso, S.Kom',
+            'jenis_kelamin' => 'L',
+            'tempat_lahir' => 'Lebak',
+            'tanggal_lahir' => '1980-01-01',
+            'agama' => 'Islam',
+            'status_kepegawaian' => 'PNS',
+            'jenis_ptk' => 'Guru',
             'no_telp' => '081234567890',
         ]);
 
         $guru2 = Guru::create([
             'user_id' => null,
             'nip' => '198501012010012003',
+            'nuptk' => '6543210987654321',
+            'nik' => '3201010101010002',
             'nama_guru' => 'Siti Aminah, M.Pd',
+            'jenis_kelamin' => 'P',
+            'tempat_lahir' => 'Serang',
+            'tanggal_lahir' => '1985-01-01',
+            'agama' => 'Islam',
+            'status_kepegawaian' => 'PPPK',
+            'jenis_ptk' => 'Guru',
             'no_telp' => '081298765432',
         ]);
 
