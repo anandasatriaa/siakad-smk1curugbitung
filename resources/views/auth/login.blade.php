@@ -109,7 +109,7 @@
         }
 
         .btn-login {
-            background: linear-gradient(135deg, #696cff 0%, #5f61e6 100%);
+            background: linear-gradient(135deg, #198754 0%, #157347 100%);
             border: none;
             padding: 10px;
             font-weight: 600;
@@ -118,7 +118,7 @@
         }
 
         .btn-login:hover {
-            background: linear-gradient(135deg, #5f61e6 0%, #5254cc 100%);
+            background: linear-gradient(135deg, #157347 0%, #198754 100%);
             transform: translateY(-1px);
             box-shadow: 0 4px 15px rgba(105, 108, 255, 0.4);
         }
