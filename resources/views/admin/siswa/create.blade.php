@@ -85,7 +85,7 @@
                         </div>
 
                         <div class="alert alert-info">
-                            <strong>Info:</strong> Menyimpan data ini akan otomatis membuat akun login dengan email <code>[NIS]@smkn1curugbitung.sch.id</code> dan password <code>password</code>.
+                            <strong>Info:</strong> Menyimpan data ini akan otomatis membuat akun login dengan email <code>[NIS]@smkn1curugbitung.sch.id</code> dan password <code>smkn1curugbitung</code>.
                         </div>
 
                         <button type="submit" class="btn btn-primary"><i class="bx bx-save me-1"></i> Simpan Data</button>

@@ -167,7 +167,7 @@
                         </div>
 
                         <div class="alert alert-info">
-                            <strong>Info:</strong> Menyimpan data guru juga akan otomatis membuat akun login dengan email format <code>[NIP]@smkn1curugbitung.sch.id</code> dan password default <code>password</code>.
+                            <strong>Info:</strong> Menyimpan data guru juga akan otomatis membuat akun login dengan email format <code>[NIP]@smkn1curugbitung.sch.id</code> dan password default <code>smkn1curugbitung</code>.
                         </div>
 
                         <button type="submit" class="btn btn-primary"> <i class="bx bx-save me-1"></i> Simpan Data</button>

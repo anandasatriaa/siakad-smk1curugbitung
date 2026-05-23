@@ -41,7 +41,7 @@ class SiswaController extends Controller
             'email' => $email
         ], [
             'name' => $request->nama_siswa,
-            'password' => Hash::make('password'),
+            'password' => Hash::make('smkn1curugbitung'),
             'role' => 'siswa',
         ]);
 

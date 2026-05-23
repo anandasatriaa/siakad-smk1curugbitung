@@ -45,7 +45,7 @@ class GuruController extends Controller
             'email' => $email
         ], [
             'name' => $request->nama_guru,
-            'password' => Hash::make('password'),
+            'password' => Hash::make('smkn1curugbitung'),
             'role' => 'guru',
         ]);
 
