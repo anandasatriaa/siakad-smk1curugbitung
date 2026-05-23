@@ -84,7 +84,7 @@ class GuruFeatureController extends Controller
         $siswas = [];
 
         if ($kelas_id) {
-            $siswas = Siswa::where('kelas_id', $kelas_id)->get();
+            $siswas = Siswa::with('user')->where('kelas_id', $kelas_id)->get();
         }
 
         return view('guru.siswa_kelas', compact('kelasList', 'kelas_id', 'siswas', 'periode_id', 'periodes'));

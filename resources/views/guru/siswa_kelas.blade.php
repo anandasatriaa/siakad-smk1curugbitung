@@ -14,6 +14,7 @@
         </div>
         <div class="card-body">
             <form action="{{ route('guru.siswa.kelas') }}" method="GET">
+                <div class="row">
                     <div class="col-md-6">
                         <label class="form-label" for="periode_id">Periode Akademik</label>
                         <select class="form-select" id="periode_id" name="periode_id" onchange="this.form.submit()" required>
@@ -36,6 +37,7 @@
                             @endforeach
                         </select>
                     </div>
+                </div>
             </form>
         </div>
     </div>
@@ -52,8 +54,11 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Foto</th>
                                     <th>NIS</th>
+                                    <th>NISN</th>
                                     <th>Nama Siswa</th>
+                                    <th>Jenis Kelamin</th>
                                     <th>Jabatan</th>
                                 </tr>
                             </thead>
@@ -61,8 +66,17 @@
                                 @foreach($siswas as $index => $s)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
+                                        <td>
+                                            @if($s->foto)
+                                                <img src="{{ asset('storage/' . $s->foto) }}" alt="Foto" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                            @else
+                                                <img src="{{ asset('assets/img/avatars/user-default.png') }}" alt="Default" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                            @endif
+                                        </td>
                                         <td>{{ $s->nis }}</td>
-                                        <td>{{ $s->nama_siswa }}</td>
+                                        <td>{{ $s->nisn }}</td>
+                                        <td><strong>{{ $s->nama_siswa }}</strong></td>
+                                        <td>{{ $s->jenis_kelamin }}</td>
                                         <td>{{ $s->jabatan ? ucfirst($s->jabatan) : 'Siswa' }}</td>
                                     </tr>
                                 @endforeach
