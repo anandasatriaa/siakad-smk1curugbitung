@@ -35,6 +35,15 @@ class SiswaController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        if ($request->jabatan === 'ketua kelas') {
+            $exists = Siswa::where('kelas_id', $request->kelas_id)
+                ->where('jabatan', 'ketua kelas')
+                ->exists();
+            if ($exists) {
+                return back()->withInput()->withErrors(['jabatan' => 'Kelas ini sudah memiliki ketua kelas.']);
+            }
+        }
+
         $email = strtolower(str_replace(' ', '', $request->nis)) . '@smkn1curugbitung.sch.id';
 
         $user = User::firstOrCreate([
@@ -81,6 +90,16 @@ class SiswaController extends Controller
             'jabatan' => 'nullable|string|max:100',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        if ($request->jabatan === 'ketua kelas') {
+            $exists = Siswa::where('kelas_id', $request->kelas_id)
+                ->where('jabatan', 'ketua kelas')
+                ->where('id', '!=', $siswa->id)
+                ->exists();
+            if ($exists) {
+                return back()->withInput()->withErrors(['jabatan' => 'Kelas ini sudah memiliki ketua kelas.']);
+            }
+        }
 
         $data = $request->only('nis', 'nisn', 'nama_siswa', 'jenis_kelamin', 'kelas_id', 'jabatan');
 

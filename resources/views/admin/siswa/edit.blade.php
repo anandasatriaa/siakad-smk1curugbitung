@@ -68,7 +68,6 @@
                                 <option value="" {{ old('jabatan', $siswa->jabatan) == '' ? 'selected' : '' }}>Siswa</option>
                                 <option value="ketua kelas" {{ old('jabatan', $siswa->jabatan) == 'ketua kelas' ? 'selected' : '' }}>Ketua Kelas</option>
                                 <option value="sekretaris" {{ old('jabatan', $siswa->jabatan) == 'sekretaris' ? 'selected' : '' }}>Sekretaris</option>
-                                <option value="bendahara" {{ old('jabatan', $siswa->jabatan) == 'bendahara' ? 'selected' : '' }}>Bendahara</option>
                             </select>
                             @error('jabatan')
                                 <div class="invalid-feedback">{{ $message }}</div>
