@@ -50,7 +50,11 @@ class GuruFeatureController extends Controller
 
         $jadwals = $query->get();
 
-        return view('guru.jadwal_mengajar', compact('jadwals', 'periode_id', 'periodes'));
+        $selectedPeriode = \App\Models\PeriodeAkademik::find($periode_id);
+        $semester = $selectedPeriode ? $selectedPeriode->semester : '-';
+        $tahun_ajaran = $selectedPeriode ? $selectedPeriode->tahun_ajaran : '-';
+
+        return view('guru.jadwal_mengajar', compact('jadwals', 'periode_id', 'periodes', 'semester', 'tahun_ajaran'));
     }
 
     public function siswaKelas(Request $request)

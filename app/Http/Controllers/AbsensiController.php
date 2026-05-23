@@ -74,7 +74,7 @@ class AbsensiController extends Controller
             }
         }
 
-        return view('absensi.index', compact(
+        return view('siswa.absensi', compact(
             'isSuperadmin', 'kelasList', 'kelas_id', 'tanggal', 'siswas', 'absensiExisting', 'periode_id', 'periodes'
         ));
     }

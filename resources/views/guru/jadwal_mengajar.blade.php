@@ -97,13 +97,6 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <div class="me-3">
-                                                <div class="avatar avatar-sm">
-                                                    <span class="avatar-initial rounded-circle bg-label-primary">
-                                                        {{ strtoupper(substr($jadwal->mata_pelajaran->nama_mapel, 0, 2)) }}
-                                                    </span>
-                                                </div>
-                                            </div>
                                             <div>
                                                 <div class="fw-bold">{{ $jadwal->mata_pelajaran->nama_mapel }}</div>
                                                 <small class="text-muted">{{ $jadwal->mata_pelajaran->kode_mapel }}</small>
@@ -122,7 +115,7 @@
                                         @if($isToday)
                                             <span class="badge bg-success">Hari Ini</span>
                                         @else
-                                            <span class="badge bg-label-secondary">Terjadwal</span>
+                                            <span class="badge bg-label-secondary">-</span>
                                         @endif
                                     </td>
                                 </tr>
