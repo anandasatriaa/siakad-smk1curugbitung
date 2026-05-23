@@ -42,6 +42,14 @@ class NilaiController extends Controller
         $mapel_id = $request->input('mapel_id');
         $periode_id = $request->input('periode_id');
 
+        // Auto-select jika pilihan hanya ada 1 (memudahkan Guru)
+        if (!$kelas_id && count($kelasList) === 1) {
+            $kelas_id = $kelasList->first()->id;
+        }
+        if (!$mapel_id && count($mapelList) === 1) {
+            $mapel_id = $mapelList->first()->id;
+        }
+
         // Jika tidak ada filter periode, ambil yang aktif
         if (!$periode_id) {
             $activePeriode = \App\Models\PeriodeAkademik::where('is_aktif', true)->first();

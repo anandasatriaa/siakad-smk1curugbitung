@@ -21,9 +21,9 @@
             <h5 class="mb-0">Pilih Kelas dan Mata Pelajaran</h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('nilai.index') }}" method="GET">
+            <form id="filterForm" action="{{ route('nilai.index') }}" method="GET">
                 <div class="row gx-3 gy-2 align-items-end">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label" for="kelas_id">Kelas</label>
                         <select class="form-select" id="kelas_id" name="kelas_id" required>
                             <option value="">-- Pilih Kelas --</option>
@@ -34,7 +34,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label" for="mapel_id">Mata Pelajaran</label>
                         <select class="form-select" id="mapel_id" name="mapel_id" required>
                             <option value="">-- Pilih Mata Pelajaran --</option>
@@ -55,9 +55,6 @@
                                 </option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100"><i class="bx bx-search me-1"></i> Tampilkan</button>
                     </div>
                 </div>
             </form>
@@ -134,6 +131,16 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
+        $('#kelas_id, #mapel_id, #periode_id').on('change', function() {
+            let kelas = $('#kelas_id').val();
+            let mapel = $('#mapel_id').val();
+            let periode = $('#periode_id').val();
+
+            if (kelas && mapel && periode) {
+                $('#filterForm').submit();
+            }
+        });
+
         function calculateAverage(row) {
             let id = row.find('.tugas').data('id');
             let tugas = row.find('.tugas').val();
