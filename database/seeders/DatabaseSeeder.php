@@ -102,6 +102,7 @@ class DatabaseSeeder extends Seeder
         $siswa = Siswa::create([
             'user_id' => $siswaUser->id,
             'nis' => '202410001',
+            'nisn' => '0061234567',
             'nama_siswa' => 'Ahmad Reza',
             'jenis_kelamin' => 'L',
             'kelas_id' => $kelas10RPL->id,
@@ -111,6 +112,7 @@ class DatabaseSeeder extends Seeder
         Siswa::create([
             'user_id' => null,
             'nis' => '202410002',
+            'nisn' => '0067654321',
             'nama_siswa' => 'Dina Mariana',
             'jenis_kelamin' => 'P',
             'kelas_id' => $kelas10RPL->id,

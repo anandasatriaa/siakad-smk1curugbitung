@@ -27,6 +27,7 @@ class SiswaController extends Controller
     {
         $request->validate([
             'nis' => 'required|string|max:50|unique:siswa',
+            'nisn' => 'required|string|max:50|unique:siswa',
             'nama_siswa' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P',
             'kelas_id' => 'required|exists:kelas,id',
@@ -47,6 +48,7 @@ class SiswaController extends Controller
         $data = [
             'user_id' => $user->id,
             'nis' => $request->nis,
+            'nisn' => $request->nisn,
             'nama_siswa' => $request->nama_siswa,
             'jenis_kelamin' => $request->jenis_kelamin,
             'kelas_id' => $request->kelas_id,
@@ -72,6 +74,7 @@ class SiswaController extends Controller
     {
         $request->validate([
             'nis' => 'required|string|max:50|unique:siswa,nis,' . $siswa->id,
+            'nisn' => 'required|string|max:50|unique:siswa,nisn,' . $siswa->id,
             'nama_siswa' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P',
             'kelas_id' => 'required|exists:kelas,id',
@@ -79,7 +82,7 @@ class SiswaController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $data = $request->only('nis', 'nama_siswa', 'jenis_kelamin', 'kelas_id', 'jabatan');
+        $data = $request->only('nis', 'nisn', 'nama_siswa', 'jenis_kelamin', 'kelas_id', 'jabatan');
 
         if ($request->hasFile('foto')) {
             if ($siswa->foto) {

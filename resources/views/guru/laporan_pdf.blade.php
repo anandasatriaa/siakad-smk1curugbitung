@@ -69,7 +69,7 @@
         </tr>
         <tr>
             <td>Nomor Induk / NISN</td>
-            <td>: {{ $siswa->nis }}</td>
+            <td>: {{ $siswa->nis }} / {{ $siswa->nisn }}</td>
             <td>Semester</td>
             <td>: {{ $semester }}</td>
         </tr>

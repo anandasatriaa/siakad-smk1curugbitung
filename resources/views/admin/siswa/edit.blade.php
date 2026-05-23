@@ -26,6 +26,13 @@
                             @enderror
                         </div>
                         <div class="mb-3">
+                            <label class="form-label" for="nisn">NISN</label>
+                            <input type="text" class="form-control @error('nisn') is-invalid @enderror" id="nisn" name="nisn" value="{{ old('nisn', $siswa->nisn) }}" required />
+                            @error('nisn')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label" for="nama_siswa">Nama Lengkap</label>
                             <input type="text" class="form-control @error('nama_siswa') is-invalid @enderror" id="nama_siswa" name="nama_siswa" value="{{ old('nama_siswa', $siswa->nama_siswa) }}" required />
                             @error('nama_siswa')
