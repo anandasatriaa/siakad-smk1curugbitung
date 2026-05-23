@@ -31,15 +31,25 @@ class ProfileController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
         
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        $isEditable = in_array($user->role, ['superadmin', 'admin']);
+
+        $rules = [
             'password' => 'nullable|string|min:6|confirmed',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
-        ]);
+        ];
 
-        $user->name = $request->name;
-        $user->email = $request->email;
+        if ($isEditable) {
+            $rules['name'] = 'required|string|max:255';
+            $rules['email'] = 'required|email|max:255|unique:users,email,' . $user->id;
+        }
+
+        $request->validate($rules);
+
+        if ($isEditable) {
+            $user->name = $request->name;
+            $user->email = $request->email;
+        }
+
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
@@ -48,7 +58,9 @@ class ProfileController extends Controller
         if ($user->role === 'guru') {
             $guru = Guru::where('user_id', $user->id)->first();
             if ($guru) {
-                $guru->nama_guru = $request->name;
+                if ($isEditable) {
+                    $guru->nama_guru = $request->name;
+                }
                 
                 if ($request->hasFile('foto')) {
                     if ($guru->foto) {
@@ -61,7 +73,9 @@ class ProfileController extends Controller
         } elseif ($user->role === 'siswa') {
             $siswa = Siswa::where('user_id', $user->id)->first();
             if ($siswa) {
-                $siswa->nama_siswa = $request->name;
+                if ($isEditable) {
+                    $siswa->nama_siswa = $request->name;
+                }
                 
                 if ($request->hasFile('foto')) {
                     if ($siswa->foto) {

@@ -54,12 +54,12 @@
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
                                         <label for="name" class="form-label">Nama Lengkap</label>
-                                        <input class="form-control" type="text" id="name" name="name" value="{{ old('name', $user->name) }}" autofocus />
+                                        <input class="form-control" type="text" id="name" name="name" value="{{ old('name', $user->name) }}" {{ !in_array($user->role, ['superadmin', 'admin']) ? 'readonly' : '' }} autofocus />
                                         @error('name') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                     <div class="mb-3 col-md-12">
                                         <label for="email" class="form-label">E-mail</label>
-                                        <input class="form-control" type="text" id="email" name="email" value="{{ old('email', $user->email) }}" />
+                                        <input class="form-control" type="text" id="email" name="email" value="{{ old('email', $user->email) }}" {{ !in_array($user->role, ['superadmin', 'admin']) ? 'readonly' : '' }} />
                                         @error('email') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
 
