@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label" for="nama_guru">Nama Lengkap & Gelar</label>
+                                    <label class="form-label" for="nama_guru">Nama Lengkap</label>
                                     <input type="text" class="form-control @error('nama_guru') is-invalid @enderror" id="nama_guru" name="nama_guru" value="{{ old('nama_guru', $guru->nama_guru) }}" required />
                                     @error('nama_guru')
                                         <div class="invalid-feedback">{{ $message }}</div>
