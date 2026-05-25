@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PeriodeAkademik;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PeriodeAkademikController extends Controller
 {
@@ -21,9 +22,18 @@ class PeriodeAkademikController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tahun_ajaran' => 'required|string|max:20',
+            'tahun_ajaran' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('periode_akademik')->where(function ($query) use ($request) {
+                    return $query->where('semester', $request->semester);
+                }),
+            ],
             'semester' => 'required|in:Ganjil,Genap',
             'is_aktif' => 'boolean',
+        ], [
+            'tahun_ajaran.unique' => 'Tahun ajaran dan semester tersebut sudah ada.',
         ]);
 
         // Jika periode baru diatur aktif, nonaktifkan periode lainnya
@@ -44,9 +54,18 @@ class PeriodeAkademikController extends Controller
     public function update(Request $request, PeriodeAkademik $periode)
     {
         $request->validate([
-            'tahun_ajaran' => 'required|string|max:20',
+            'tahun_ajaran' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('periode_akademik')->where(function ($query) use ($request) {
+                    return $query->where('semester', $request->semester);
+                })->ignore($periode->id),
+            ],
             'semester' => 'required|in:Ganjil,Genap',
             'is_aktif' => 'boolean',
+        ], [
+            'tahun_ajaran.unique' => 'Tahun ajaran dan semester tersebut sudah ada.',
         ]);
 
         // Jika periode ini diatur aktif, nonaktifkan periode lainnya
