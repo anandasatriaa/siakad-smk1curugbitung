@@ -64,8 +64,13 @@
     <!-- Form Nilai -->
     @if($kelas_id && $mapel_id && count($siswas) > 0)
         <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Daftar Siswa</h5>
+            <div class="card-header bg-white pb-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-3">Daftar Siswa</h5>
+                    <div class="mb-3">
+                        <input type="text" id="tableSearch" class="form-control form-control-sm" placeholder="Cari siswa...">
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <form action="{{ route('nilai.store') }}" method="POST">
@@ -131,6 +136,14 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
+        // Simple search functionality
+        $("#tableSearch").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("tbody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
         $('#kelas_id, #mapel_id, #periode_id').on('change', function() {
             let kelas = $('#kelas_id').val();
             let mapel = $('#mapel_id').val();

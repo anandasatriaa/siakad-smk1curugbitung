@@ -52,8 +52,13 @@
 
     @if($kelas_id)
         <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Riwayat Absensi</h5>
+            <div class="card-header bg-white pb-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-3">Riwayat Absensi</h5>
+                    <div class="mb-3">
+                        <input type="text" id="tableSearch" class="form-control form-control-sm" placeholder="Cari riwayat...">
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 @if(count($absensis) > 0)
@@ -103,3 +108,16 @@
     @endif
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $("#tableSearch").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("tbody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+@endpush
