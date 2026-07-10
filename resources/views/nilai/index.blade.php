@@ -90,6 +90,7 @@
                                     <th>Nilai UTS</th>
                                     <th>Nilai UAS</th>
                                     <th>Nilai Akhir</th>
+                                    <th>Capaian Kompetensi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,16 +103,19 @@
                                         <td>{{ $s->nis }}</td>
                                         <td>{{ $s->nama_siswa }}</td>
                                         <td>
-                                            <input type="number" step="0.01" min="0" max="100" name="tugas[{{ $s->id }}]" class="form-control input-nilai tugas" value="{{ $nilai->nilai_tugas ?? '' }}" placeholder="0 - 100" data-id="{{ $s->id }}">
+                                            <input type="number" step="0.01" min="0" max="100" name="tugas[{{ $s->id }}]" class="form-control input-nilai tugas" style="min-width: 120px;" value="{{ $nilai->nilai_tugas ?? '' }}" placeholder="0 - 100" data-id="{{ $s->id }}">
                                         </td>
                                         <td>
-                                            <input type="number" step="0.01" min="0" max="100" name="uts[{{ $s->id }}]" class="form-control input-nilai uts" value="{{ $nilai->nilai_uts ?? '' }}" placeholder="0 - 100" data-id="{{ $s->id }}">
+                                            <input type="number" step="0.01" min="0" max="100" name="uts[{{ $s->id }}]" class="form-control input-nilai uts" style="min-width: 120px;" value="{{ $nilai->nilai_uts ?? '' }}" placeholder="0 - 100" data-id="{{ $s->id }}">
                                         </td>
                                         <td>
-                                            <input type="number" step="0.01" min="0" max="100" name="uas[{{ $s->id }}]" class="form-control input-nilai uas" value="{{ $nilai->nilai_uas ?? '' }}" placeholder="0 - 100" data-id="{{ $s->id }}">
+                                            <input type="number" step="0.01" min="0" max="100" name="uas[{{ $s->id }}]" class="form-control input-nilai uas" style="min-width: 120px;" value="{{ $nilai->nilai_uas ?? '' }}" placeholder="0 - 100" data-id="{{ $s->id }}">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control bg-light akhir-{{ $s->id }}" value="{{ $nilai->nilai_akhir ?? '' }}" readonly placeholder="Otomatis">
+                                            <input type="text" class="form-control bg-light akhir-{{ $s->id }}" style="min-width: 120px;" value="{{ $nilai->nilai_akhir ?? '' }}" readonly placeholder="Otomatis">
+                                        </td>
+                                        <td>
+                                            <textarea name="capaian[{{ $s->id }}]" class="form-control" rows="4" style="min-width: 300px;" placeholder="Masukkan capaian kompetensi...">{{ $nilai->capaian_kompetensi ?? '' }}</textarea>
                                         </td>
                                     </tr>
                                 @endforeach

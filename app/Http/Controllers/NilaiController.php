@@ -105,6 +105,8 @@ class NilaiController extends Controller
             'uts.*' => 'nullable|numeric|min:0|max:100',
             'uas' => 'required|array',
             'uas.*' => 'nullable|numeric|min:0|max:100',
+            'capaian' => 'nullable|array',
+            'capaian.*' => 'nullable|string',
         ]);
 
         $user = Auth::user();
@@ -124,8 +126,9 @@ class NilaiController extends Controller
         foreach ($request->tugas as $siswa_id => $nilai_tugas) {
             $nilai_uts = $request->uts[$siswa_id] ?? null;
             $nilai_uas = $request->uas[$siswa_id] ?? null;
+            $capaian = $request->capaian[$siswa_id] ?? null;
 
-            if ($nilai_tugas !== null || $nilai_uts !== null || $nilai_uas !== null) {
+            if ($nilai_tugas !== null || $nilai_uts !== null || $nilai_uas !== null || $capaian !== null) {
                 $t = floatval($nilai_tugas ?? 0);
                 $ut = floatval($nilai_uts ?? 0);
                 $ua = floatval($nilai_uas ?? 0);
@@ -145,6 +148,7 @@ class NilaiController extends Controller
                         'nilai_uts' => $nilai_uts,
                         'nilai_uas' => $nilai_uas,
                         'nilai_akhir' => $nilai_akhir,
+                        'capaian_kompetensi' => $capaian,
                     ]
                 );
             }
